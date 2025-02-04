@@ -1,0 +1,45 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+// Initial state for authentication
+const initialState = {
+  user: null, // store user data after login
+  isAuthenticated: false, // check if user is authenticated
+  loading: false, // track loading state during auth requests
+  error: null, // store error messages if any
+};
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    // Action for login success
+    loginSuccess: (state, action) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      state.loading = false;
+    },
+    // Action for login failure
+    loginFailure: (state, action) => {
+      state.isAuthenticated = false;
+      state.loading = false;
+      state.error = action.payload;
+    },
+    // Action to log out
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.loading = false;
+      state.error = null;
+    },
+    // Action for loading state
+    setLoading: (state) => {
+      state.loading = true;
+    },
+  },
+});
+
+// Export actions
+export const { loginSuccess, loginFailure, logout, setLoading } = authSlice.actions;
+
+// Export reducer
+export default authSlice.reducer;
