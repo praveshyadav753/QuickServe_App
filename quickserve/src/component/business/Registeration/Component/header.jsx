@@ -13,7 +13,7 @@ function FormHeader({step}) {
             </div>
             <div className="relative flex flex-row grid-cols-1 text-center gap-y-8 sm:gap-y-10 md:gap-y-12 md:grid-cols-3 gap-x-12">
               <div>
-              <div className={`flex items-center justify-center  w-16 h-16 mx-auto bg-white border-2  ${step === 2 ? 'border-green-400' : 'border-gray-200'} rounded-full shadow`}>
+              <div className={`flex items-center justify-center  w-16 h-16 mx-auto  border-2 border-gray-300  ${step >1 ? 'bg-green-200' : 'bg-white'} rounded-full shadow`}>
               <span className="text-xl font-semibold text-gray-700 ">1</span>
                 </div>
                 <h3 className="mt-2 sm:mt-3 text-xl font-semibold leading-tight text-gray-900 md:mt-4">
@@ -23,7 +23,7 @@ function FormHeader({step}) {
               </div>
               {/* Other step components */}
               <div>
-                <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white  border-2 border-gray-200 rounded-full shadow">
+                <div className={`flex items-center justify-center w-16 h-16 mx-auto ${step >2 ? 'bg-green-200' : 'bg-white'}  border-2 border-gray-200 rounded-full shadow`}>
                   <span className="text-xl font-semibold text-gray-700 ">2</span>
                 </div>
                 <h3 className="mt-4 sm:mt-2 text-xl font-semibold leading-tight text-gray-900 md:mt-4">
@@ -33,7 +33,7 @@ function FormHeader({step}) {
               </div>
               {/* third */}
               <div>
-                <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white  border-2 border-gray-200 rounded-full shadow">
+                <div className={`flex items-center justify-center w-16 h-16 mx-auto ${step >3 ? 'bg-green-200' : 'bg-white'}  border-2 border-gray-200 rounded-full shadow`}>
                   <span className="text-xl font-semibold text-gray-700 ">3</span>
                 </div>
                 <h3 className="mt-4 sm:mt-6 text-xl font-semibold leading-tight text-gray-900 md:mt-4">

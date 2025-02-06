@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function ProtectRoute({children, AuthenticationRequired = true}) {
-    const [AuthenticationRequired, setIsAuthenticationRequired] = useState(True);
+    // const [AuthenticationRequired, setIsAuthenticationRequired] = useState(True);
 
     const authStatus = useSelector(state => state.auth.status)
 
@@ -15,19 +15,19 @@ function ProtectRoute({children, AuthenticationRequired = true}) {
 
     useEffect(() => {
      
-      if(AuthenticationRequired && authStatus!=isAuthenticated)  //authentication required but is not authenticated 
+      if(AuthenticationRequired && authStatus!=AuthenticationRequired)  //authentication required but is not authenticated 
        {
-        navigate('/login')
+        navigate('/')
        }
-       else if(AuthenticationRequired && authStatus==isAuthenticated)
+       else if(AuthenticationRequired && authStatus==AuthenticationRequired)
        {
         navigate('/Dashboard')
        }
        setLoader(false)
   
-},[authStatus, navigate, authentication])
+},[authStatus, navigate, AuthenticationRequired])
 
 return loader ? <h1>Loading...</h1> : <>{children}</>
 }
 
-export default ProtectRoute
+export default ProtectRoute;

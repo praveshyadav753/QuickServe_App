@@ -7,16 +7,17 @@ const RoleSelection = () => {
 
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
-    
+    setTimeout(() => {
+      navigate(`${role}`);
+    }, 1000);
   };
-
-  const handleContinue = () => {
-    if (selectedRole) {
-      navigate(`${selectedRole}`); 
-    } else {
-      alert("Please select a role to continue!");
-    }
-  };
+  // const handleContinue = () => {
+  //   if (selectedRole) {
+  //     navigate(`${selectedRole}`); 
+  //   } else {
+  //     alert("Please select a role to continue!");
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center gap-10 min-h-screen bg-gray-100"> 
@@ -44,13 +45,13 @@ const RoleSelection = () => {
         </button>
       </div>
 
-      <button
+      {/* <button
         className="sm:w-sm lg:w-lg xl:w-xl mt-6 px-6 py-3 bg-gray-800 text-white font-bold rounded-lg shadow-md hover:bg-gray-700 disabled:bg-gray-400"
         onClick={handleContinue}
         disabled={!selectedRole}
       >
         Continue
-      </button>
+      </button> */}
     </div>
   );
 };
