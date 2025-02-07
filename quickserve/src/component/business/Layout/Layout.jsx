@@ -19,7 +19,7 @@ const Layout = () => {
 
           {/* Main Content */}
           <main >
-            <div className="mx-auto max-w-screen-2xl h-full p-4 md:p-6 2xl:p-10 ">
+            <div className="mx-auto max-w-screen-2xl bg-gray-50 h-full p-4 md:p-6 2xl:p-10 ">
               <Outlet /> {/* Dynamically render child components */}
             </div>
           </main>

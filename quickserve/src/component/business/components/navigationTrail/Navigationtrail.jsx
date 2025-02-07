@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Navigationtrail = ({ pageName }) => {
   return (
-    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-2 p-5  hidden sm:flex flex-col gap-3 bg-white sm:flex-row sm:items-center sm:justify-between">
       <h2 className="text-title-xl text-3xl font-semibold text-gray-600 dark:text-white">
         {pageName}
       </h2>

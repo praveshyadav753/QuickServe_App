@@ -8,7 +8,6 @@ import PageTitle from '../../../../pagetitle/pagetitle';
 const BusinessDashboard = () => {
   return (
     <>
-    <PageTitle title={Dashboard} />
     <div className='flex flex-col gap-10'>
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
       <CardDataStats title="Total appointment" total="4" rate="0.43%" levelUp />

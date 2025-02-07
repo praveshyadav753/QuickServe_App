@@ -1,6 +1,8 @@
 import React from 'react'
+import {  useNavigate } from 'react-router'
 
 function ServicesHeader() {
+  const navigate =useNavigate()
   return (
     <div className='w-full flex flex-row p-5 shadow-sm '>
         <div className='w-3/2 '>
@@ -18,7 +20,7 @@ function ServicesHeader() {
             <option value='rating'>Rating</option>
             <option value='price'>Price</option>
            </select>
-           <button className="bg-cyan-900 pl-2 text-white cursor-pointer pr-2 md:pl-4 md:pr-4 rounded"> New </button>
+           <button className="bg-cyan-900 pl-2 text-white cursor-pointer pr-2 md:pl-4 md:pr-4 rounded" onClick={() => navigate('newservice')}> New </button>
         </div>
          
     
