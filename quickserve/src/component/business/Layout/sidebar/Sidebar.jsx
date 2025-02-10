@@ -62,7 +62,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 ">
           <NavLink to="/business">
             {/* <img src={Logo} alt="Logo" /> */}
-            <h2 className="text-lg font-semibold text-white">QuickServe</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-white">QuickServe</h2>
           </NavLink>
 
           <button
@@ -166,9 +166,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                               <NavLink
                                 to="/business"
                                 className={({ isActive }) =>
-                                  `group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-white duration-300 ease-in-out hover:text-white ${
+                                  `group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-white duration-300 ease-in-out hover:text-indigo-950 ${
                                     isActive &&
-                                    "!bg-gray-100 !text-white !font-bold"
+                                    " !text-white !font-bold"
                                   }`
                                 }
                               >
@@ -182,14 +182,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     );
                   }}
                 </SidebarLinkGroup>
-                {/* <!-- Menu Item Dashboard --> */}
-
-                {/* <!-- Menu Item Calendar --> */}
+               
                 <li>
                   <NavLink
                     to="services"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("calendar") &&
+                      pathname.includes("service") &&
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
@@ -214,7 +212,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 {/* <!-- Menu Item Profile --> */}
                 <li>
                   <NavLink
-                    to="/profile"
+                    to="feedback"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                       pathname.includes("profile") &&
                       "bg-graydark dark:bg-meta-4"
@@ -237,15 +235,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         fill=""
                       />
                     </svg>
-                    Profile
+                    Feedbacks
                   </NavLink>
                 </li>
                 {/* <!-- Menu Item Settings --> */}
                 <li>
                   <NavLink
-                    to="/settings"
+                    to="appointments"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("settings") &&
+                      pathname.includes("appointment") &&
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
@@ -278,7 +276,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         </clipPath>
                       </defs>
                     </svg>
-                    Settings
+                    Appointments
                   </NavLink>
                 </li>
                 {/* <!-- Menu Item Settings --> */}

@@ -8,6 +8,8 @@ import Services from "./business/Pages/Services/Services";
 import Layout from "./business/Layout/Layout";
 import Servicesetting from "./business/Pages/Services/settings/ServiceSetting";
 import NewService from "./business/Pages/Services/addservice/Addservice";
+import FeedbackDashboard from "./business/Pages/ReviewsAndFeedback/Reviewfeedback";
+import AppointmentPage from "./business/Pages/Appointments/Appointmentpage";
 
 
 export  {
@@ -21,4 +23,6 @@ export  {
       Services,
       Servicesetting,
       NewService,
+      FeedbackDashboard,
+      AppointmentPage,
     }

@@ -3,7 +3,7 @@ import React from "react";
 const DeleteService = () => {
   return (
     <div className="flex justify-center items-center   m-auto  p-5">
-      <div className="w-full  bg-red-50 border border-red-200 rounded-lg shadow-lg p-5">
+      <div className="w-full  bg-red-50 dark:bg-red-200 border border-red-200 rounded-lg shadow-lg p-5">
         {/* Header Section */}
         <h2 className="text-lg font-semibold text-gray-900">Delete Service</h2>
         <p className="text-gray-700 mt-2">

@@ -7,7 +7,7 @@ const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+    <div className="dark:bg-gray-700 dark:text-white">
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -18,8 +18,8 @@ const Layout = () => {
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
           {/* Main Content */}
-          <main >
-            <div className="mx-auto max-w-screen-2xl bg-gray-50 h-full p-4 md:p-6 2xl:p-10 ">
+          <main  >
+            <div className="mx-auto max-w-screen-2xl   p-4 md:p-6 2xl:p-10 ">
               <Outlet /> {/* Dynamically render child components */}
             </div>
           </main>

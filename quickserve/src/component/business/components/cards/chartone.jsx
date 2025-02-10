@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
+import React, { useState } from "react";
+import ReactApexChart from "react-apexcharts";
 
 const ChartOne = () => {
+  const [activeTimeFrame, setActiveTimeFrame] = useState("month");
+
   const options = {
     legend: {
       show: false,
-      position: 'top',
-      horizontalAlign: 'left',
+      position: "top",
+      horizontalAlign: "left",
     },
-    colors: ['#3C50E0', '#80CAEE'],
+    colors: ["#3C50E0", "#80CAEE"],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
+      fontFamily: "Satoshi, sans-serif",
       height: 335,
-      type: 'area',
+      type: "area",
       dropShadow: {
         enabled: true,
-        color: '#623CEA14',
+        color: "#623CEA14",
         top: 10,
         blur: 4,
         left: 0,
@@ -45,7 +47,7 @@ const ChartOne = () => {
     ],
     stroke: {
       width: [2, 2],
-      curve: 'straight',
+      curve: "straight",
     },
     grid: {
       xaxis: {
@@ -64,8 +66,8 @@ const ChartOne = () => {
     },
     markers: {
       size: 4,
-      colors: '#fff',
-      strokeColors: ['#3056D3', '#80CAEE'],
+      colors: "#fff",
+      strokeColors: ["#3056D3", "#80CAEE"],
       strokeWidth: 3,
       strokeOpacity: 0.9,
       strokeDashArray: 0,
@@ -75,7 +77,7 @@ const ChartOne = () => {
       },
     },
     xaxis: {
-      type: 'category',
+      type: "category",
       categories: [], // Will be updated dynamically
       axisBorder: {
         show: false,
@@ -87,7 +89,7 @@ const ChartOne = () => {
     yaxis: {
       title: {
         style: {
-          fontSize: '0px',
+          fontSize: "0px",
         },
       },
       min: 0,
@@ -98,31 +100,31 @@ const ChartOne = () => {
   const data = {
     month: [
       {
-        name: 'Product One',
+        name: "Product One",
         data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
       },
       {
-        name: 'Product Two',
+        name: "Product Two",
         data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
       },
     ],
     year: [
       {
-        name: 'Product One',
+        name: "Product One",
         data: [45, 22, 50, 47, 28, 32, 44, 53, 40, 58, 51, 60],
       },
       {
-        name: 'Product Two',
+        name: "Product Two",
         data: [60, 40, 55, 45, 58, 52, 70, 61, 62, 60, 53, 68],
       },
     ],
     total: [
       {
-        name: 'Product One',
+        name: "Product One",
         data: [500, 600, 650, 550, 450, 480, 490, 530, 510, 520, 530, 540],
       },
       {
-        name: 'Product Two',
+        name: "Product Two",
         data: [480, 500, 550, 520, 560, 530, 600, 620, 580, 590, 570, 580],
       },
     ],
@@ -131,32 +133,66 @@ const ChartOne = () => {
   const [state, setState] = useState({
     series: data.month,
     xaxisCategories: [
-      'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
     ],
   });
 
   const handleTimeFrameChange = (timeFrame) => {
+    setActiveTimeFrame(timeFrame);  
     switch (timeFrame) {
-      case 'month':
+      case "month":
         setState({
           series: data.month,
           xaxisCategories: [
-            'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
           ],
         });
         break;
-      case 'year':
+      case "year":
         setState({
           series: data.year,
           xaxisCategories: [
-            '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034',
+            "2023",
+            "2024",
+            "2025",
+            "2026",
+            "2027",
+            "2028",
+            "2029",
+            "2030",
+            "2031",
+            "2032",
+            "2033",
+            "2034",
           ],
         });
         break;
-      case 'total':
+      case "total":
         setState({
           series: data.total,
-          xaxisCategories: ['Product 1', 'Product 2'], // Total data may be different
+          xaxisCategories: ["service1", "service2"], // Total data may be different
         });
         break;
       default:
@@ -165,12 +201,12 @@ const ChartOne = () => {
   };
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+    <div className="col-span-12 rounded-sm border  border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-600 dark-text-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark  sm:px-7.5 xl:col-span-8">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
         <div className="flex w-full flex-wrap gap-3 sm:gap-5">
           <div className="flex min-w-47.5">
             <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
+              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-blue-600"></span>
             </span>
             <div className="w-full">
               <p className="font-semibold text-primary">Total Revenue</p>
@@ -188,25 +224,21 @@ const ChartOne = () => {
           </div>
         </div>
         <div className="flex w-full max-w-45 justify-end">
-          <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button
-              className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark"
-              onClick={() => handleTimeFrameChange('month')}
-            >
-              Month
-            </button>
-            <button
-              className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
-              onClick={() => handleTimeFrameChange('year')}
-            >
-              Year
-            </button>
-            <button
-              className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
-              onClick={() => handleTimeFrameChange('total')}
-            >
-              Total
-            </button>
+          <div className="inline-flex items-center rounded-md bg-gray-500 text-black dark:text-white p-1.5 dark:bg-meta-4">
+            {["month", "year", "total"].map((timeFrame) => (
+              <button
+                key={timeFrame}
+                className={`rounded py-1 px-3 text-xs font-medium transition-all
+        ${
+          activeTimeFrame === timeFrame
+            ? "bg-white text-black shadow-md"
+            : "dark:hover:bg-gray-700 hover:shadow-card dark:text-white hover:bg-white"
+        }`}
+                onClick={() => handleTimeFrameChange(timeFrame)}
+              >
+                {timeFrame.charAt(0).toUpperCase() + timeFrame.slice(1)}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -214,7 +246,10 @@ const ChartOne = () => {
       <div>
         <div id="chartOne" className="-ml-5">
           <ReactApexChart
-            options={{ ...options, xaxis: { ...options.xaxis, categories: state.xaxisCategories } }}
+            options={{
+              ...options,
+              xaxis: { ...options.xaxis, categories: state.xaxisCategories },
+            }}
             series={state.series}
             type="area"
             height={350}

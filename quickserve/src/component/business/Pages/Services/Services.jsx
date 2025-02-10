@@ -25,7 +25,7 @@ function Services() {
       <Navigationtrail pageName="Services" />
       <ServicesHeader />
 
-      <div className="mt-5">
+      <div className="mt-5 dark:text-white">
         {servicedata.length === 0 ? (
           <div>Please Add a Service</div>
         ) : (
@@ -33,7 +33,7 @@ function Services() {
             {servicedata.map((service, index) => (
               <li
                 key={index}
-                className="w-full border  rounded-sm border-gray-300 p-5 flex gap-5 sm:gap-10 "
+                className="w-full border  rounded-sm border-gray-300 dark:border-gray-900 bg-white dark:bg-gray-600 p-5 flex gap-5 sm:gap-10 "
               >
                 <div className="w-1/2 flex justify-between">
                   <h2>{service.title}</h2>

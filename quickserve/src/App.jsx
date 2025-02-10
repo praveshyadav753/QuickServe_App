@@ -18,6 +18,8 @@ import {
   Services,
   Servicesetting,
   NewService,
+  FeedbackDashboard,
+  AppointmentPage
 } from "./component/ExportComponent.js";
 import store from "./features/store/Store";
 import ProtectRoute from "./Protected/ProtectRoute.jsx";
@@ -25,23 +27,8 @@ import "./App.css";
 import Serviceinfo from "./component/business/Pages/Services/settings/component/Serviceinfo.jsx";
 import Category from "./component/business/Pages/Services/settings/component/Category.jsx";
 import DeleteService from "./component/business/Pages/Services/settings/component/Deleteservice.jsx";
+import Homepage from "./component/Customer/Pages/home/Homepage.jsx";
 
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-
-//   < ProtectRoute AuthenticationRequired={false}>
-//    <Route path='/'  >
-//      <Route index element={<Desktop />}/>
-//      <Route path='Login' element={<Login />} />
-//      <Route path='Register' >
-//           <Route index element={<RoleSelection />} />
-//           <Route path='business' element={< RegistrationPage />} />
-//           <Route path='customer' element={<UserRegistrationPage />} />
-//     </Route>
-//     </Route>
-//     </ProtectRoute>
-//   )
-// );
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,12 +44,14 @@ const router = createBrowserRouter(
         <Route path="customer" element={<UserRegistrationPage />} />
       </Route>
 
+{/* ....................service provier................... */}
+
       <Route path="/business" element={<Layout />}>
         {/* Index Route - loads Dashboard when /business is accessed */}
         <Route
           index
           element={
-            <ProtectRoute AuthenticationRequired={false}>
+            <ProtectRoute AuthenticationRequired={true} role={'business'}>
               <BusinessDashboard />
             </ProtectRoute>
           }
@@ -72,7 +61,7 @@ const router = createBrowserRouter(
         <Route
           path="services"
           element={
-            <ProtectRoute AuthenticationRequired={false}>
+            <ProtectRoute AuthenticationRequired={false} role={'business'}>
               <Services />
             </ProtectRoute>
           }
@@ -83,7 +72,7 @@ const router = createBrowserRouter(
           <Route
             index
             element={
-              <ProtectRoute AuthenticationRequired={false}>
+              <ProtectRoute AuthenticationRequired={false} role={'business'}>
                 <Serviceinfo />
               </ProtectRoute>
             }
@@ -92,7 +81,7 @@ const router = createBrowserRouter(
             path="general"
             element={
               // Route for the /general path
-              <ProtectRoute AuthenticationRequired={false}>
+              <ProtectRoute AuthenticationRequired={false} role={'business'}>
                 <Serviceinfo /> {/* Same component here */}
               </ProtectRoute>
             }
@@ -100,7 +89,7 @@ const router = createBrowserRouter(
           <Route
             path="category"
             element={
-              <ProtectRoute AuthenticationRequired={false}>
+              <ProtectRoute AuthenticationRequired={true} role={'business'}>
                 <Category />
               </ProtectRoute>
             }
@@ -108,7 +97,7 @@ const router = createBrowserRouter(
           <Route
             path="delete"
             element={
-              <ProtectRoute AuthenticationRequired={false}>
+              <ProtectRoute AuthenticationRequired={true} role={'business'}>
                 <DeleteService />
               </ProtectRoute>
             }
@@ -118,12 +107,34 @@ const router = createBrowserRouter(
         <Route
           path="services/newservice"
           element={
-            <ProtectRoute AuthenticationRequired={false}>
+            <ProtectRoute AuthenticationRequired={true} role={'business'}>
               <NewService />
             </ProtectRoute>
           }
         />
+        <Route
+          path="feedback"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={'business'}>
+              <FeedbackDashboard />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="appointments"
+          element={
+             <ProtectRoute AuthenticationRequired={true} role={'business'}>
+          <     AppointmentPage />
+              </ProtectRoute>
+          } 
+          />
       </Route>
+
+      {/* ..................customer.............. */}
+      <Route path="/customer" element={
+        <ProtectRoute AuthenticationRequired role={'customer'}>
+          <Homepage />
+        </ProtectRoute>} />
     </>
   )
 );

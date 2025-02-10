@@ -2,14 +2,14 @@ import React from 'react';
 
 const CardDataStats = ({ title, total, rate, levelUp, levelDown, children }) => {
   return (
-    <div className="rounded-sm border border-gray-100 bg-emerald-50 py-6 px-7.5 shadow-sm ">
-      <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2">
+    <div className="rounded-sm border border-gray-100 bg-white dark:bg-gray-600 dark:border-gray-800 py-6 px-7.5 shadow-sm ">
+      <div className=" text-black dark:text-white flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2">
         {children}
       </div>
 
       <div className="mt-4 flex items-end justify-between">
         <div>
-          <h4 className="text-title-md font-bold text-black ">
+          <h4 className="text-title-md font-bold  ">
             {total}
           </h4>
           <span className="text-sm font-medium">{title}</span>
