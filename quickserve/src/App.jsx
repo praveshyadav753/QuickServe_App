@@ -28,13 +28,17 @@ import Serviceinfo from "./component/business/Pages/Services/settings/component/
 import Category from "./component/business/Pages/Services/settings/component/Category.jsx";
 import DeleteService from "./component/business/Pages/Services/settings/component/Deleteservice.jsx";
 import Homepage from "./component/Customer/Pages/home/Homepage.jsx";
-
+import CustomerLayout from './component/Customer/components/layout.jsx'
+import { CustomerHomepage, ServicePage } from "./component/Customer/components/export.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Public Route */}
-      <Route path="/" element={<Desktop />} />
+      <Route path="/" element={<CustomerLayout />} >
+        <Route index element={< CustomerHomepage/>} />
+      </Route>
+      
       <Route path="/Login" element={<Login />} />
 
       {/* Registration Routes */}
