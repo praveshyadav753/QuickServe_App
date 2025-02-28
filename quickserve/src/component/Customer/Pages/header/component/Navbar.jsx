@@ -10,10 +10,10 @@ function Navbar() {
           <NavLink to="/home">Home</NavLink>
         </li>
         <li>
-          <NavLink to="/about">Services</NavLink>
+          <NavLink to="/services">Services</NavLink>
         </li>
         <li>
-          <NavLink to="/services">Contact</NavLink>
+          <NavLink to="/">Contact</NavLink>
         </li>
         <li>
           <NavLink to="/Book-now">Book Now</NavLink>

@@ -30,13 +30,28 @@ import DeleteService from "./component/business/Pages/Services/settings/componen
 import Homepage from "./component/Customer/Pages/home/Homepage.jsx";
 import CustomerLayout from './component/Customer/components/layout.jsx'
 import { CustomerHomepage, ServicePage } from "./component/Customer/components/export.jsx";
-
+import CategoryDetail from "./component/Customer/Pages/servicepage/CategoryDetail.jsx";
+import ServiceDetail from "./component/Customer/Pages/servicepage/Detailespage"
+import Subcategory from "./component/Customer/Pages/servicepage/Subcategory.jsx";
+import Cart from "./component/Customer/Pages/cart/cart.jsx";
+import Checkout from "./component/Customer/Pages/checkout/checkout.jsx"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Public Route */}
       <Route path="/" element={<CustomerLayout />} >
         <Route index element={< CustomerHomepage/>} />
+        <Route path="/home" element={<CustomerHomepage />} />
+        <Route path="/services" element={<ServicePage />} />
+        <Route path="/serviceDetail" element={<CategoryDetail />} />
+        <Route path="/viewDetails" element={<ServiceDetail />} />
+        <Route path="/subcategory" element={<Subcategory/>} />
+        <Route path="/cart" element={<Cart/>} />
+        <Route path="/checkout" element={
+          <ProtectRoute AuthenticationRequired={true} role={'customer'}>
+            <Checkout />
+          </ProtectRoute>
+        } />
       </Route>
       
       <Route path="/Login" element={<Login />} />

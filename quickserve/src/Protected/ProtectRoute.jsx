@@ -58,7 +58,7 @@ function ProtectRoute({ children, AuthenticationRequired = true, role }) {
   useEffect(() => {
     if (AuthenticationRequired && !authStatus) {
       console.log('Redirecting: Authentication required');
-      navigate('/');
+      navigate('/login');
     } else if (AuthenticationRequired && authStatus && role !== userRole) {
       console.log(`Redirecting: Incorrect role. Expected ${role}, but got ${userRole}`);
       if (userRole === 'customer') navigate('/customer');
