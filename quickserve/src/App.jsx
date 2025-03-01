@@ -35,6 +35,11 @@ import ServiceDetail from "./component/Customer/Pages/servicepage/Detailespage"
 import Subcategory from "./component/Customer/Pages/servicepage/Subcategory.jsx";
 import Cart from "./component/Customer/Pages/cart/cart.jsx";
 import Checkout from "./component/Customer/Pages/checkout/checkout.jsx"
+
+
+
+import AdminDashboard from "./component/admin/Pages/adminDashboard.jsx"
+import Admin from "./component/admin/layouts/admin/index.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -149,11 +154,11 @@ const router = createBrowserRouter(
           />
       </Route>
 
-      {/* ..................customer.............. */}
-      <Route path="/customer" element={
-        <ProtectRoute AuthenticationRequired role={'customer'}>
-          <Homepage />
-        </ProtectRoute>} />
+      {/* ..................admin.............. */}
+      <Route path="/admin" element={
+        
+          <Admin />
+        } />
     </>
   )
 );
