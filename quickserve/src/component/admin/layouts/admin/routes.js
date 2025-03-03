@@ -1,53 +1,53 @@
 import React from "react";
-
 import Dashboard from "../../Pages/adminDashboard";
 
 // Icon Imports
 import {
-  LayoutDashboard,   // Dashboard
-  Building,          // Businesses
-  ClipboardCheck,    // Service Requests
-  ListTree,          // Categories & Subcategories
-  Users,            // Users
-  FileBarChart,      // Reports
-  Settings,          // Settings
+  LayoutDashboard, // Dashboard
+  Building,        // Businesses
+  ClipboardCheck,  // Service Requests
+  ListTree,        // Categories & Subcategories
+  Users,           // Users
+  FileBarChart,    // Reports
+  Settings,        // Settings
 } from "lucide-react";
-import Businesspage from "../../Pages/Businesspage";
+
+import Businesspage from "../../Pages/businesmangement/Businesspage";
 import Servicerequests from "../../Pages/Servicerequests";
 import Userspage from "../../Pages/Userspage";
 import SettingPage from "../../Pages/SettingPage";
 import ProfilePage from "../../Pages/ProfilePage";
-import ReportsPage from "../../Pages/ReportsPage.jsx";
+import ReportsPage from "../../Pages/ReportsPage";
+import CatandsubcatPage from "../../Pages/CatandsubcatPage";
 
 const routes = [
   {
     name: "Main Dashboard",
     layout: "/admin",
-    path: "",
-    icon: LayoutDashboard ,
-    component: Dashboard, 
+    path: "dashboard", // ✅ Fix: Make sure this matches the route
+    icon: LayoutDashboard,
+    component: Dashboard,
   },
   {
     name: "Business Management",
     layout: "/admin",
-    path: "Business",
-    icon:Building,
+    path: "business",
+    icon: Building,
     component: Businesspage,
-    secondary: true,
   },
   {
     name: "Service Requests",
     layout: "/admin",
-    icon: ClipboardCheck ,
-    path: "data-tables",
+    path: "service-requests",
+    icon: ClipboardCheck,
     component: Servicerequests,
   },
   {
     name: "Categories & Subcategories",
     layout: "/admin",
-    path: "profile",
+    path: "categories-subcategories",
     icon: ListTree,
-    component: ProfilePage,
+    component: CatandsubcatPage,
   },
   {
     name: "Users",
@@ -56,20 +56,20 @@ const routes = [
     icon: Users,
     component: Userspage,
   },
-  
   {
     name: "Reports",
     layout: "/admin",
-    path: "rtl",
-    icon:FileBarChart,
-    component:  ReportsPage,
+    path: "reports",
+    icon: FileBarChart,
+    component: ReportsPage,
   },
   {
     name: "Settings",
     layout: "/admin",
-    path: "rtl",
-    icon:Settings,
+    path: "settings",
+    icon: Settings,
     component: SettingPage,
   },
 ];
+
 export default routes;

@@ -1,12 +1,12 @@
 import React from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
 import Navbar from "../../components/components/navbar";
 import Sidebar from "../../components/components/sidebar";
 import Footer from "../../components/components/footer/Footer";
 import routes from "./routes.js";
 
-export default function Admin(props) {
-  const { ...rest } = props;
+
+export default function Admin() {
   const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
@@ -16,78 +16,43 @@ export default function Admin(props) {
       window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
     );
   }, []);
+
   React.useEffect(() => {
     getActiveRoute(routes);
   }, [location.pathname]);
 
   const getActiveRoute = (routes) => {
-    let activeRoute = "Main Dashboard";
     for (let i = 0; i < routes.length; i++) {
-      if (
-        window.location.href.indexOf(
-          routes[i].layout + "/" + routes[i].path
-        ) !== -1
-      ) {
+      if (location.pathname.includes(`/admin/${routes[i].path}`)) {
         setCurrentRoute(routes[i].name);
       }
     }
-    return activeRoute;
   };
-  const getActiveNavbar = (routes) => {
-    let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-      ) {
-        return routes[i].secondary;
-      }
-    }
-    return activeNavbar;
-  };
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route path={`/${prop.path}`} element={React.createElement(prop.component)} key={key} />
-        );
-      } else {
-        return null;
+      if (prop.layout === "/admin" && prop.component) {
+        return <Route key={key} path={prop.path} element={<prop.component />} />;
       }
+      return null;
     });
   };
 
-  document.documentElement.dir = "ltr";
   return (
     <div className="flex h-full w-full">
       <Sidebar open={open} onClose={() => setOpen(false)} />
-      {/* Navbar & Main Content */}
-      <div className="h-full w-full bg-lightPrimary dark:!bg-[#242b44]">
-        {/* Main Content */}
-        <main
-          className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
-        >
-          {/* Routes */}
-          <div className="h-full">
-            <Navbar
-              onOpenSidenav={() => setOpen(true)}
-              logoText={"Horizon UI Tailwind React"}
-              brandText={currentRoute}
-              secondary={getActiveNavbar(routes)}
-              {...rest}
-            />
-            <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
-              <Routes>
-                {getRoutes(routes)}
-
-                <Route
-                  path="/"
-                  element={<Navigate to="/admin/default" replace />}
-                />
-              </Routes>
-            </div>
-            <div className="p-3">
-              <Footer />
-            </div>
+      <div className="h-full w-full bg-lightPrimary dark:bg-[#2b3350]">
+        <main className="mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]">
+          <Navbar
+            onOpenSidenav={() => setOpen(true)}
+            logoText="Admin Dashboard"
+            brandText={currentRoute}
+          />
+          <div className="mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
+           <Outlet/>
+          </div>
+          <div className="p-3">
+            <Footer />
           </div>
         </main>
       </div>

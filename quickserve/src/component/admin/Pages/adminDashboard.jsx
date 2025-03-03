@@ -19,7 +19,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-[#212841] p-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-[#1f253b] p-6">
       {/* Header */}
       
 
