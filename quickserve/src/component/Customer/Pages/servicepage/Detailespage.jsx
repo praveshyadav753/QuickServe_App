@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import useApi from "../../../../apihook";
 const service = {
     id: 1,
     name: "Basic Makeup Package",
@@ -17,8 +19,9 @@ const service = {
     ],
   };
   
-  
 export default function ServiceDetail() {
+  const {loading,error,isError,data}=useApi()
+  const [services,setservices]=useState(data)
     return (
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
         {/* Service Name & Provider */}

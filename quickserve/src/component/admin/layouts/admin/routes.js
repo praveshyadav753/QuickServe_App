@@ -8,7 +8,8 @@ import {
   ClipboardCheck,  // Service Requests
   ListTree,        // Categories & Subcategories
   Users,           // Users
-  FileBarChart,    // Reports
+  FileBarChart, 
+  CalendarCheck,   // Reports
   Settings,        // Settings
 } from "lucide-react";
 
@@ -17,7 +18,7 @@ import Servicerequests from "../../Pages/Servicerequests";
 import Userspage from "../../Pages/Userspage";
 import SettingPage from "../../Pages/SettingPage";
 import ProfilePage from "../../Pages/ProfilePage";
-import ReportsPage from "../../Pages/ReportsPage";
+import BookingsPage from "../../Pages/BookingsPage";
 import CatandsubcatPage from "../../Pages/CatandsubcatPage";
 
 const routes = [
@@ -57,11 +58,11 @@ const routes = [
     component: Userspage,
   },
   {
-    name: "Reports",
+    name: "bookings",
     layout: "/admin",
-    path: "reports",
-    icon: FileBarChart,
-    component: ReportsPage,
+    path: "bookings",
+    icon: CalendarCheck,
+    component: BookingsPage,
   },
   {
     name: "Settings",

@@ -23,7 +23,7 @@ const Cart = () => {
     <div className="p-6 max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Cart Items */}
       <div className="lg:col-span-2">
-        <h2 className="text-2xl font-bold mb-4">Shopping Cart</h2>
+        <h2 className="text-2xl font-bold mb-4">Book services </h2>
         {cartItems.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg mb-4">
             <img src={item.image} alt={item.name} className="w-16 h-16 rounded" />

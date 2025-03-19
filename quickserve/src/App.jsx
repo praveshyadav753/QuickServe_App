@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Provider } from "react-redux";
+import { Navigate } from "react-router-dom";
 // import Servicesetting from "./component/ExportComponent.js";
 import {
   createBrowserRouter,
@@ -33,7 +34,7 @@ import {
   CustomerHomepage,
   ServicePage,
 } from "./component/Customer/components/export.jsx";
-import CategoryDetail from "./component/Customer/Pages/servicepage/CategoryDetail.jsx";
+import CategoryDetail from "./component/Customer/Pages/servicepage/ServicesPage.jsx";
 import ServiceDetail from "./component/Customer/Pages/servicepage/Detailespage";
 import Subcategory from "./component/Customer/Pages/servicepage/Subcategory.jsx";
 import Cart from "./component/Customer/Pages/cart/cart.jsx";
@@ -46,7 +47,8 @@ import Businesspage from "./component/admin/Pages/businesmangement/Businesspage.
 import Servicerequests from "./component/admin/Pages/Servicerequests.jsx";
 import CatandsubcatPage from "./component/admin/Pages/CatandsubcatPage.jsx";
 import Userspage from "./component/admin/Pages/Userspage.jsx";
-import ReportsPage from "./component/admin/Pages/ReportsPage.jsx";
+import BookingsPage from "./component/admin/Pages/BookingsPage.jsx";
+import OrderDetailsPage from "./component/admin/Pages/Orderdetals.jsx";
 import SettingPage from "./component/admin/Pages/SettingPage.jsx";
 import BusinessDetailPage from "./component/admin/Pages/businesmangement/Subpage/BusinessDetail.jsx";
 const router = createBrowserRouter(
@@ -57,9 +59,9 @@ const router = createBrowserRouter(
         <Route index element={<CustomerHomepage />} />
         <Route path="/home" element={<CustomerHomepage />} />
         <Route path="/services" element={<ServicePage />} />
-        <Route path="/serviceDetail" element={<CategoryDetail />} />
-        <Route path="/viewDetails" element={<ServiceDetail />} />
-        <Route path="/subcategory" element={<Subcategory />} />
+        <Route path="/serviceDetail/:subcategory_id" element={<CategoryDetail />} />
+        <Route path="/viewDetails/:service_id" element={<ServiceDetail />} />
+        <Route path="/category/subcategory/:category_id" element={<Subcategory />} />
         <Route path="/cart" element={<Cart />} />
         <Route
           path="/checkout"
@@ -167,17 +169,20 @@ const router = createBrowserRouter(
       </Route>
 
       {/* ..................admin.............. */}
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+
       <Route path="/admin" element={<Admin />}>
-      
+      <Route path="dashboard" element={<Dashboard />}/>
       <Route path="dashboard" element={<Dashboard/>}/>
       <Route path="business" element={<Businesspage/>}/>
       <Route path="service-requests" element={<Servicerequests/>}/>
       <Route path="categories-subcategories" element={<CatandsubcatPage/>}/>
       <Route path="users" element={<Userspage/>}/>
-      <Route path="reports" element={<ReportsPage/>}/>
+      <Route path="bookings" element={<BookingsPage/>}/>
       <Route path="settings" element={<SettingPage/>}/>
 
       <Route path="details/:businessId" element={<BusinessDetailPage/>}/>
+      <Route path="orderdetail/:orderId" element={<OrderDetailsPage/>}/>
       
       </Route>
     </>
