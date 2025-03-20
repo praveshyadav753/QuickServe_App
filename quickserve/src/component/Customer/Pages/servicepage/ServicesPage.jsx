@@ -6,7 +6,7 @@ import { useParams } from 'react-router'
 
 function CategoryDetail() {
   const {subcategory_id}=useParams()
-  const {data,loading,error,isError}=useApi(`core/services/?subcategory_id=${subcategory_id}`)
+  const {data,loading,error,isError}=useApi(`service/services/?subcategory_id=${subcategory_id}`)
 
   return (
     <div>

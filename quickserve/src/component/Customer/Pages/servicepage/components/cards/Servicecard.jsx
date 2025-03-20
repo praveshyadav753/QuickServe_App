@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 export default function ServicePackages({services}) {
   const navigate = useNavigate();
 
-  const viewdetails = () => {
-    navigate("/viewDetails");
+  const viewdetails = (service_id) => {
+    navigate(`/serviceDetail/viewDetails/${service_id}`);
   };
 
   
@@ -17,7 +17,7 @@ export default function ServicePackages({services}) {
 
       {services.map((service) => (
         <div
-          key={service.id}
+          key={service.service_id}
           className="flex justify-between items-center border-b pb-4 mb-4"
         >
           {/* Left Section - Package Details */}
@@ -27,8 +27,8 @@ export default function ServicePackages({services}) {
 
             {/* Rating & Reviews */}
             <div className="flex items-center text-gray-600 text-sm space-x-2">
-              <span className="text-purple-600">⭐ {service.rating}</span>
-              <span>({service?.reviews} reviews)</span>
+              <span className="text-purple-600">⭐ {service.average_rating}</span>
+              <span>({service?.total_reviews} reviews)</span>
             </div>
 
             {/* Price & Duration */}
@@ -48,7 +48,7 @@ export default function ServicePackages({services}) {
 
             {/* View Details Link */}
             <Link
-              to="/viewDetails"
+              to={`/serviceDetail/viewDetails/${service.service_id}`}
               className="text-purple-600 font-medium mt-2 inline-block"
             >
               View details

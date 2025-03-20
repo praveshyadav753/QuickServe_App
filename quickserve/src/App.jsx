@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Provider } from "react-redux";
 import { Navigate } from "react-router-dom";
+import NotFound from "./component/Notfound.jsx"
 // import Servicesetting from "./component/ExportComponent.js";
 import {
   createBrowserRouter,
@@ -51,6 +52,7 @@ import BookingsPage from "./component/admin/Pages/BookingsPage.jsx";
 import OrderDetailsPage from "./component/admin/Pages/Orderdetals.jsx";
 import SettingPage from "./component/admin/Pages/SettingPage.jsx";
 import BusinessDetailPage from "./component/admin/Pages/businesmangement/Subpage/BusinessDetail.jsx";
+import ContactSection from "./component/Customer/Pages/contact/Contactus.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -58,9 +60,10 @@ const router = createBrowserRouter(
       <Route path="/" element={<CustomerLayout />}>
         <Route index element={<CustomerHomepage />} />
         <Route path="/home" element={<CustomerHomepage />} />
+        <Route path="/contact-us" element={<ContactSection/>}/>
         <Route path="/services" element={<ServicePage />} />
         <Route path="/serviceDetail/:subcategory_id" element={<CategoryDetail />} />
-        <Route path="/viewDetails/:service_id" element={<ServiceDetail />} />
+        <Route path="/serviceDetail/viewDetails/:service_id" element={<ServiceDetail />} />
         <Route path="/category/subcategory/:category_id" element={<Subcategory />} />
         <Route path="/cart" element={<Cart />} />
         <Route
@@ -185,6 +188,9 @@ const router = createBrowserRouter(
       <Route path="orderdetail/:orderId" element={<OrderDetailsPage/>}/>
       
       </Route>
+
+
+      <Route path="*" element={<NotFound />} />
     </>
   )
 );

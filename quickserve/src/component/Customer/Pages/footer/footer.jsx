@@ -1,6 +1,6 @@
 import React from "react";
 import { FaTwitter, FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-
+import { Link ,NavLink} from "react-router";
 const Footer = () => {
   return (
     <footer className="bg-gray-100 text-gray-700 py-10">
@@ -26,7 +26,7 @@ const Footer = () => {
               <li><a href="#" className="hover:underline">Reviews</a></li>
               <li><a href="#" className="hover:underline">Categories near you</a></li>
               <li><a href="#" className="hover:underline">Blog</a></li>
-              <li><a href="#" className="hover:underline">Contact us</a></li>
+              <li><Link to="/contact-us" className="hover:underline">Contact us</Link></li>
             </ul>
           </div>
 
@@ -34,7 +34,7 @@ const Footer = () => {
           <div>
             <h2 className="text-lg font-semibold mb-3">For partners</h2>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:underline">Register as a professional</a></li>
+              <li><Link to="/register/business/" className="hover:underline">Register as a professional</Link></li>
             </ul>
           </div>
 
