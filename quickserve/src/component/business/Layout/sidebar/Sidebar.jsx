@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const authstatus = useSelector((state) => state.authStatus);
+  console.log(authstatus)
   const location = useLocation();
   const { pathname } = location;
 

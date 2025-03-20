@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, loginFailure, setLoading } from '../../features/reducers/Slice';
+import useApi from '../../apihook';
+import axios from 'axios';
 
-const users = [
-  { userId: 1, email: "xyz@gmail.com", username: "xyz", role: "customer", password: "12345" },
-  { userId: 2, email: "xyc@gmail.com", username: "zec", role: "business", password: "12345" }
-];
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,31 +13,58 @@ const Login = () => {
     email: "",
     password: "",
   });
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const reqdata=JSON.stringify(formData);
+    console.log(reqdata)
     e.preventDefault();
-    dispatch(setLoading()); // Set loading before authentication check
-
-    const user = users.find(u => u.email === formData.email && u.password === formData.password);
-
-    if (user) {
-      dispatch(loginSuccess(user)); // Dispatch login success
+    dispatch(setLoading());
+    
+  
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/auth/login/",reqdata
+       ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // Ensure credentials are sent
+        }
+      );
+  
+      const { access_token, user } = response.data; // Use access_token instead of access
+      dispatch(loginSuccess(user));
+  
+      // Store JWT Token for authentication
+      localStorage.setItem("token", access_token);
+  
       alert(`Welcome ${user.email}`);
-      
-      if (user.role === 'business') {
-        navigate('/business');
+  
+      // Redirect user based on role (if role exists)
+      if (user.role === "business") {
+        navigate("/business");
       } else {
-        navigate('/customer');
+        navigate("/");
       }
-    } else {
-      dispatch(loginFailure("Invalid email or password")); // Dispatch login failure
-      alert("Invalid email or password");
+    } catch (error) {
+      dispatch(loginFailure("Invalid email or password"));
+  
+      if (error.response) {
+        alert(error.response.data.error || "Invalid email or password");
+      } else {
+        alert("Network error. Please try again.");
+      }
     }
   };
+  
+  
+  
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">

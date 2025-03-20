@@ -62,7 +62,7 @@ export default function ServicePackages({services}) {
               alt={service.service_name}
               className="w-24 h-24 object-cover rounded-lg shadow-md mb-2"
             />
-            <button className="px-4 py-1 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-100 transition">
+            <button className="px-4 py-1 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-100 transition" onClick={()=>{}}>
               Add
             </button>
           </div>
