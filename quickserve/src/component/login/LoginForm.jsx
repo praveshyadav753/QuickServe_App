@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch ,useSelector} from 'react-redux';
+
 import { loginSuccess, loginFailure, setLoading } from '../../features/reducers/Slice';
 import useApi from '../../apihook';
 import axios from 'axios';
+import { syncCartOnLogin } from '../Customer/Pages/cart/synccart';
 
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {loading}=useSelector((state)=>state.auth)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -43,11 +46,13 @@ const Login = () => {
   
       // Store JWT Token for authentication
       localStorage.setItem("token", access_token);
-  
-      alert(`Welcome ${user.email}`);
+      //sync cart item with localstorage
+      console.log(user)
+      syncCartOnLogin(user.id, dispatch);
+     
   
       // Redirect user based on role (if role exists)
-      if (user.role === "business") {
+      if (user.role === "Service Provider") {
         navigate("/business");
       } else {
         navigate("/");
@@ -100,7 +105,7 @@ const Login = () => {
                     type="submit"
                     className="mt-5 cursor-pointer tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
-                    Login
+                    {loading?"loading...":"Login"} 
                   </button>
                 </div>
               </form>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'trendingService',
     'reviews',
     'auth_app',
+    'cart',
     
     
 ]

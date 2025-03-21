@@ -16,7 +16,7 @@ const SubcategoryCompo = ({subcatagories}) => {
       <h1 className="text-3xl font-bold text-center mb-6">Select a SubCategory</h1>
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-        {subcatagories.map((subcategory) => (
+        {subcatagories?.map((subcategory) => (
          
           <div
             key={subcategory.subcategory_id}

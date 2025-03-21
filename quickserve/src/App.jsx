@@ -92,7 +92,7 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"business"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Service Provider"}>
               <BusinessDashboard />
             </ProtectRoute>
           }
@@ -102,7 +102,7 @@ const router = createBrowserRouter(
         <Route
           path="services"
           element={
-            <ProtectRoute AuthenticationRequired={false} role={"business"}>
+            <ProtectRoute AuthenticationRequired={false} role={"Service Provider"}>
               <Services />
             </ProtectRoute>
           }
@@ -113,7 +113,7 @@ const router = createBrowserRouter(
           <Route
             index
             element={
-              <ProtectRoute AuthenticationRequired={false} role={"business"}>
+              <ProtectRoute AuthenticationRequired={false} role={"Service Provider"}>
                 <Serviceinfo />
               </ProtectRoute>
             }
@@ -122,7 +122,7 @@ const router = createBrowserRouter(
             path="general"
             element={
               // Route for the /general path
-              <ProtectRoute AuthenticationRequired={false} role={"business"}>
+              <ProtectRoute AuthenticationRequired={false} role={"Service Provider"}>
                 <Serviceinfo /> {/* Same component here */}
               </ProtectRoute>
             }
@@ -130,7 +130,7 @@ const router = createBrowserRouter(
           <Route
             path="category"
             element={
-              <ProtectRoute AuthenticationRequired={true} role={"business"}>
+              <ProtectRoute AuthenticationRequired={true} role={"Service Provider"}>
                 <Category />
               </ProtectRoute>
             }
@@ -138,7 +138,7 @@ const router = createBrowserRouter(
           <Route
             path="delete"
             element={
-              <ProtectRoute AuthenticationRequired={true} role={"business"}>
+              <ProtectRoute AuthenticationRequired={true} role={"Service Provider"}>
                 <DeleteService />
               </ProtectRoute>
             }
@@ -148,7 +148,7 @@ const router = createBrowserRouter(
         <Route
           path="services/newservice"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"business"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Service Provider"}>
               <NewService />
             </ProtectRoute>
           }
@@ -156,7 +156,7 @@ const router = createBrowserRouter(
         <Route
           path="feedback"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"business"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Service Provider"}>
               <FeedbackDashboard />
             </ProtectRoute>
           }
@@ -164,7 +164,7 @@ const router = createBrowserRouter(
         <Route
           path="appointments"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"business"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Service Provider"}>
               <AppointmentPage />
             </ProtectRoute>
           }

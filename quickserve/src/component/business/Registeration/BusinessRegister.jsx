@@ -3,8 +3,11 @@ import FormHeader from "./Component/header";
 import Step2 from "./Component/Step2";
 import { Step3 } from "./Component/Step3";
 import Step1 from "./Component/Step1";
-
+import usePostApi from "../../../usePostApi";
+import { useNavigate } from "react-router";
 const BusinessRegistration = () => {
+  const naviagate = useNavigate();
+
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -27,25 +30,27 @@ const BusinessRegistration = () => {
   // ______________________________.........error handling in form..........___________________________________________________
   const phoneRegex = /^[6-9]\d{9}$/;
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const [error, setErrors] = useState({});
-
+  const [errors, setErrors] = useState({});
 
   const handleNext = () => {
-    
     let errorObj = { ...error };
 
     if (step === 1) {
-      if (!formData.fullName || !formData.email || !formData.gender || !formData.phoneNumber) {
-        errorObj.step1 = "All * fields are mandatory, please fill the required fields";
+      if (
+        !formData.fullName ||
+        !formData.email ||
+        !formData.gender ||
+        !formData.phoneNumber
+      ) {
+        errorObj.step1 =
+          "All * fields are mandatory, please fill the required fields";
       } else if (!phoneRegex.test(formData.phoneNumber)) {
         errorObj.step1 = "Please enter a valid phone number";
-      }else if(!emailRegex.test(formData.email)){
+      } else if (!emailRegex.test(formData.email)) {
         errorObj.step1 = "Please enter a valid email address";
-      }else if (!formData.countryCode){
+      } else if (!formData.countryCode) {
         errorObj.step1 = "Please select a country code";
-      }
-
-       else {
+      } else {
         delete errorObj.step1;
         setStep(step + 1);
       }
@@ -58,7 +63,7 @@ const BusinessRegistration = () => {
         delete errorObj.step2;
         setStep(step + 1);
       }
-    } 
+    }
 
     setErrors(errorObj);
   };
@@ -74,31 +79,45 @@ const BusinessRegistration = () => {
   const pincodeRegex = /^[1-9]{1}[0-9]{5}$/;
 
   const validateform = () => {
-     const errorObj = { ...error };
-      if (!formData.BusinessName || !formData.address || !formData.pincode  || !formData.selectedCategory) {
-        errorObj.step3 = "All * fields are mandatory, please fill the required fields";
-        setErrors(errorObj);
-        return false;
-      }else if (!pincodeRegex.test(formData.pincode)) {
-        errorObj.step3 = "Please enter a valid pincode";
-        setErrors(errorObj);
-      } 
-      else {
-        delete errorObj.step3;
-        setErrors(errorObj);
-        return true;
-
-      }
-     
+    const errorObj = { ...error };
+    if (
+      !formData.BusinessName ||
+      !formData.address ||
+      !formData.pincode ||
+      !formData.selectedCategory
+    ) {
+      errorObj.step3 =
+        "All * fields are mandatory, please fill the required fields";
+      setErrors(errorObj);
+      return false;
+    } else if (!pincodeRegex.test(formData.pincode)) {
+      errorObj.step3 = "Please enter a valid pincode";
+      setErrors(errorObj);
+    } else {
+      delete errorObj.step3;
+      setErrors(errorObj);
+      return true;
     }
+  };
 
+  const { loading, error, isError, postData } = usePostApi();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-   const  isvalidform=validateform();
-    if(isvalidform){
-    // Handle form submission (e.g., send data to server)
-    console.log("Form Data:", formData);
+    const isvalidform = validateform();
+    if (isvalidform) {
+      const response = await postData("auth/register/business/", formData);
+
+      if (response) {
+        alert("Registeration successfull please login to continue !!");
+        naviagate("/login");
+      } else {
+        console.error("Registration failed.");
+      }
+      if (isError) {
+        return <p className="text-center">{error}</p>;
+      }
+      console.log("Form Data:", formData);
     }
   };
 
@@ -112,21 +131,21 @@ const BusinessRegistration = () => {
           <Step1
             formData={formData}
             onChange={updateFormData}
-            error={error.step1}
+            error={errors.step1}
           />
         )}
         {step === 2 && (
           <Step2
             formData={formData}
             onChange={updateFormData}
-            error={error.step2}
+            error={errors.step2}
           />
         )}
         {step === 3 && (
           <Step3
             formData={formData}
             onChange={updateFormData}
-            error={error.step3}
+            error={errors.step3}
           />
         )}
 

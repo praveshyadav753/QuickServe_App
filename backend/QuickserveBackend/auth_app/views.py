@@ -37,9 +37,11 @@ def login_view(request):
     return Response({
         'access_token': str(refresh.access_token),
         'refresh_token': str(refresh),
+
         'user': {
             'id': user.user_id,
             'username': user.username,
-            'email': user.email
+            'email': user.email,
+            'role':user.role,
         }
     }, status=status.HTTP_200_OK)

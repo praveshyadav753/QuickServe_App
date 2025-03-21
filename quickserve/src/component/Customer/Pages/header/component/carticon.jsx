@@ -1,17 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+
 
 function Carticon() {
+  const{items}=useSelector((state)=>state.cart)
+  const count =items.length
     const navigate = useNavigate()
     const carthandle = () => {
         navigate('/cart')
     }
   return (
-    <div class=" flex justify-center items-center cursor-pointer" onClick={carthandle}>
-      <div class="relative py-2">
-        <div class="t-0 absolute left-3">
-          <p class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
-            3
+    <div className=" flex justify-center items-center cursor-pointer" onClick={carthandle}>
+      <div className="relative py-2">
+        <div className="t-0 absolute left-3">
+          <p className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
+            {count}
           </p>
         </div>
         <svg
@@ -20,7 +24,7 @@ function Carticon() {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="file: mt-4 h-6 w-6"
+          className="file: mt-4 h-6 w-6"
         >
           <path
             stroke-linecap="round"

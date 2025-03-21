@@ -7,6 +7,7 @@ from core.models import Category,Subcategory
 class Business(models.Model):
     business_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    pincode = models.CharField(max_length=6,null=True)
     business_name = models.CharField(max_length=255)
     address = models.TextField()
     contact_info = models.CharField(max_length=255)

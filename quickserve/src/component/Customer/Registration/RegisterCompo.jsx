@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import usePostApi from "../../../usePostApi";
 
 const SignUpForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, seterror] = useState("");
+  const [errors, seterror] = useState("");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -14,16 +15,26 @@ const SignUpForm = () => {
     }
     return null;
   };
+  const { loading, error, isError, postData } = usePostApi();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const validinput = validateInput();
     if (!validinput) seterror("Invalid email or password");
     else {
-      // Handle form submission (e.g., send data to server)
+      const response = await postData("auth/register/customer/", {email,password});
+
+      if (response) {
+        alert("Registeration successfull please login to continue !!");
+        naviagate("/login");
+      } else {
+        console.error("Registration failed.");
+      }
+      if (isError) {
+        return <p className="text-center">{errors}</p>;
+      }
       seterror("");
-      console.log("Email:", email);
-      console.log("Password:", password);
+      
     }
   };
 

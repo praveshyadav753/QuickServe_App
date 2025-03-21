@@ -11,7 +11,7 @@ const Categories = ({categories}) => {
       <h1 className="text-3xl font-bold text-center mb-6">Select a Category</h1>
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <div
             key={category.category_id}
             style={{ backgroundImage: `url(${category.image_url})`,  backgroundSize: "cover" ,
