@@ -1,8 +1,8 @@
-import React from 'react'
-import Header from '../header/Header'
-import SearchBar from './component/Search'
-import Footer from '../footer/footer'
-
+import React from "react";
+import Header from "../header/Header";
+import SearchBar from "./component/Search";
+import Footer from "../footer/footer";
+import {AnimatedNumber, Animatedstar} from "./component/stats"
 
 const popularServices = [
   {
@@ -33,7 +33,6 @@ const popularServices = [
 ];
 
 function CustomerHomepage() {
-
   const trendingServices = [
     {
       id: 1,
@@ -48,7 +47,8 @@ function CustomerHomepage() {
     {
       id: 3,
       name: "Native Water Purifier",
-      image: "https://th.bing.com/th/id/OIP.A2xf4S8elg7dd0MJnkm61QHaHa?w=176&h=180&c=7&r=0&o=5&pid=1.7",
+      image:
+        "https://th.bing.com/th/id/OIP.A2xf4S8elg7dd0MJnkm61QHaHa?w=176&h=180&c=7&r=0&o=5&pid=1.7",
     },
   ];
   return (
@@ -85,20 +85,23 @@ function CustomerHomepage() {
 
       <div className="container mx-auto px-1 py-4">
         {/* Service Ratings & Customer Stats */}
-        <div className="flex justify-around mt-8 bg-gray-100 p-4 rounded-lg shadow">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold">Total Services Booked</h2>
-            <p className="text-2xl font-bold">15,000+</p>
-          </div>
-          <div className="text-center">
-            <h2 className="text-xl font-semibold">Average Satisfaction</h2>
-            <p className="text-2xl font-bold">4.8/5</p>
-          </div>
-          <div className="text-center">
-            <h2 className="text-xl font-semibold">User Ratings</h2>
-            <p className="text-2xl font-bold">★★★★★</p>
-          </div>
+        <div className="container mx-auto px-4 py-8">
+      {/* Service Ratings & Customer Stats */}
+      <div className="flex justify-around mt-8 bg-gray-100 p-6 rounded-lg shadow">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Total Services Booked</h2>
+          <AnimatedNumber value={15000} decimals={0} /> {/* Animated Counter */}
         </div>
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Average Satisfaction</h2>
+          <AnimatedNumber value={4.8}  /> / 5
+        </div>
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">User Ratings</h2>
+          <Animatedstar value={4.8}/>
+        </div>
+      </div>
+    </div>
 
         <SearchBar />
 
@@ -108,33 +111,54 @@ function CustomerHomepage() {
             Popular Services
           </h2>
           <div className="flex flex-col overflow-x-auto no-scrollbar gap-6">
-  {/* First Row */}
-  <div className="flex  space-x-6 no-scrollbar">
-    {popularServices.slice(0, Math.ceil(popularServices.length / 2)).map((service) => (
-      <div key={service.id} className="flex-none w-[40%] sm:w-[35%] md:w-[32%] lg:w-[30%] bg-white p-4 shadow-md rounded-lg text-center h-60">
-        <img src={service.image} alt={service.name} className="w-full h-32 object-cover rounded-md mb-3" />
-        <h3 className="text-lg font-semibold text-gray-800 truncate">{service.name}</h3>
-        <button className="mt-2 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-          Book Now
-        </button>
-      </div>
-    ))}
-  </div>
+            {/* First Row */}
+            <div className="flex  space-x-6 no-scrollbar">
+              {popularServices
+                .slice(0, Math.ceil(popularServices.length / 2))
+                .map((service) => (
+                  <div
+                    key={service.id}
+                    className="flex-none w-[40%] sm:w-[35%] md:w-[32%] lg:w-[30%] bg-white p-4 shadow-md rounded-lg text-center h-60"
+                  >
+                    <img
+                      src={service.image}
+                      alt={service.name}
+                      className="w-full h-32 object-cover rounded-md mb-3"
+                    />
+                    <h3 className="text-lg font-semibold text-gray-800 truncate">
+                      {service.name}
+                    </h3>
+                    <button className="mt-2 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                      Book Now
+                    </button>
+                  </div>
+                ))}
+            </div>
 
-  {/* Second Row */}
-  <div className="flex overflow-x-auto space-x-6 no-scrollbar">
-    {popularServices.slice(Math.ceil(popularServices.length / 2)).map((service) => (
-      <div key={service.id} className="flex-nonew-[40%] sm:w-[35%] md:w-[32%] lg:w-[30%] bg-white p-4 shadow-md rounded-lg text-center h-60">
-        <img src={service.image} alt={service.name} className="w-full h-32 object-cover rounded-md mb-3" />
-        <h3 className="text-lg font-semibold text-gray-800 truncate">{service.name}</h3>
-        <button className="mt-2 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-          Book Now
-        </button>
-      </div>
-    ))}
-  </div>
-</div>
-
+            {/* Second Row */}
+            <div className="flex overflow-x-auto space-x-6 no-scrollbar">
+              {popularServices
+                .slice(Math.ceil(popularServices.length / 2))
+                .map((service) => (
+                  <div
+                    key={service.id}
+                    className="flex-nonew-[40%] sm:w-[35%] md:w-[32%] lg:w-[30%] bg-white p-4 shadow-md rounded-lg text-center h-60"
+                  >
+                    <img
+                      src={service.image}
+                      alt={service.name}
+                      className="w-full h-32 object-cover rounded-md mb-3"
+                    />
+                    <h3 className="text-lg font-semibold text-gray-800 truncate">
+                      {service.name}
+                    </h3>
+                    <button className="mt-2 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                      Book Now
+                    </button>
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
 
         {/* Popular Service Section */}
@@ -168,4 +192,4 @@ function CustomerHomepage() {
   );
 }
 
-export default CustomerHomepage
+export default CustomerHomepage;

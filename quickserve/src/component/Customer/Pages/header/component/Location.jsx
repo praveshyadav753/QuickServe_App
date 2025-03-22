@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLoadScript, Autocomplete } from "@react-google-maps/api";
 import { MapPin, LocateFixed } from "lucide-react"; // Icons for UI
 
@@ -9,10 +9,12 @@ const LocationInput = () => {
   const [coordinates, setCoordinates] = useState(null);
   const [autocomplete, setAutocomplete] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dropdownRef = useRef(null);
 
   // Load Google Maps API
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY", // Replace with your API key
+    // googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // Secure API key
     libraries,
   });
 
@@ -20,48 +22,67 @@ const LocationInput = () => {
   const onPlaceChanged = () => {
     if (autocomplete) {
       const place = autocomplete.getPlace();
-      if (place.geometry) {
-        setLocation(place.formatted_address);
-        setCoordinates({
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng(),
-        });
+      if (!place.geometry) {
+        alert("Please select a valid location.");
+        return;
       }
+      setLocation(place.formatted_address);
+      setCoordinates({
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng(),
+      });
     }
   };
 
   // Get current location
   const handleUseCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCoordinates({ latitude, longitude });
-
-          // Reverse Geocode to get address
-          const geocoder = new window.google.maps.Geocoder();
-          const latLng = { lat: latitude, lng: longitude };
-
-          geocoder.geocode({ location: latLng }, (results, status) => {
-            if (status === "OK" && results[0]) {
-              setLocation(results[0].formatted_address);
-            } else {
-              console.error("Geocoder failed:", status);
-            }
-          });
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          alert("Unable to fetch current location. Please allow location access.");
-        }
-      );
-    } else {
+    if (!navigator.geolocation) {
       alert("Geolocation is not supported by this browser.");
+      return;
     }
+
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCoordinates({ latitude, longitude });
+
+        // Reverse Geocode to get address
+        const geocoder = new window.google.maps.Geocoder();
+        const latLng = { lat: latitude, lng: longitude };
+
+        geocoder.geocode({ location: latLng }, (results, status) => {
+          setLoading(false);
+          if (status === "OK" && results[0]) {
+            setLocation(results[0].formatted_address);
+          } else {
+            console.error("Geocoder failed:", status);
+            alert("Failed to get address. Try again.");
+          }
+        });
+      },
+      (error) => {
+        setLoading(false);
+        console.error("Error getting location:", error);
+        alert("Unable to fetch current location. Please allow location access.");
+      }
+    );
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="relative w-72">
+    <div ref={dropdownRef} className="relative w-72">
       {/* Input Box */}
       <div
         className="flex items-center border border-gray-400 rounded-lg p-2 cursor-pointer bg-white"
@@ -97,18 +118,13 @@ const LocationInput = () => {
             onClick={handleUseCurrentLocation}
           >
             <LocateFixed size={18} className="mr-2" />
-            Detect Location
+            {loading ? "Detecting..." : "Detect Location"}
           </div>
         </div>
       )}
 
       {/* Coordinates Display */}
-      {coordinates && (
-        <p className="mt-3 text-sm text-gray-600">
-          <strong>Latitude:</strong> {coordinates.latitude} <br />
-          <strong>Longitude:</strong> {coordinates.longitude}
-        </p>
-      )}
+      
     </div>
   );
 };

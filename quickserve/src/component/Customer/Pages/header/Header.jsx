@@ -16,7 +16,7 @@ export default function Header() {
   const signup = () => navigate("/register");
 
   return (
-    <header className="sticky top-0 left-0 w-full z-50 bg-white shadow-md">
+    <header className="sticky top-0 left-0 w-full  z-50 bg-white shadow-md">
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         
         {/* Logo */}

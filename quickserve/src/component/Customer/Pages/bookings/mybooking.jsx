@@ -49,13 +49,13 @@ const MyBookings = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
         <div className="border-b-2 border-gray-400">
           <h2 className="text-2xl font-semibold mb-4">Order History</h2>
           <p className="text-gray-600 mb-6">
-            Check the status of recent orders, manage returns, and discover
-            similar products.
+            Check the status of recent Bookings, manage , and discover
+            similar services.
           </p>
         </div>
 
