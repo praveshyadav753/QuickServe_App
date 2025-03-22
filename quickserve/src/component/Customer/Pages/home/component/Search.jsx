@@ -9,7 +9,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="mt-9 h-15 flex items-center w-full max-w-xl mx-auto border border-gray-300 rounded-full overflow-hidden shadow-sm">
+    <div className="sm:mt-9 h-15 flex items-center w-full max-w-xl mx-auto border border-gray-300 sm:rounded-full round-xl overflow-hidden shadow-sm">
       <input
         type="text"
         value={query}
@@ -19,7 +19,7 @@ const SearchBar = () => {
       />
       <button 
         onClick={handleSearch}
-        className="bg-green-700 h-full md:w-30 m-auto flex justify-center items-center  text-white p-3 rounded-r-full hover:bg-green-800 transition"
+        className="bg-green-700 h-full md:w-30 m-auto flex justify-center items-center  text-white p-3 sm:rounded-r-full rounded-r-xl hover:bg-green-800 transition"
       >
         <Search size={25} />
       </button>

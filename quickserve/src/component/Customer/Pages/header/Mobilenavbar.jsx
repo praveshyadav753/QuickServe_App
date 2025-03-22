@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import Carticon from "./component/carticon";
 
 const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,11 +26,12 @@ const MobileNavbar = () => {
         <NavLink to="/" className="text-xl font-bold text-black">
           QuickServe
         </NavLink>
-
+        <div className="flex gap-6">
+        <Carticon/>
         {/* Hamburger Menu Button */}
         <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
           {isOpen ? <X size={28} className="text-black" /> : <Menu size={28} className="text-black" />}
-        </button>
+        </button></div>
       </div>
 
       {isOpen && (

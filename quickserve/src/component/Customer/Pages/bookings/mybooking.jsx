@@ -132,10 +132,10 @@ const MyBookings = () => {
                     </div>
                     <div className="mt-2 space-x-4">
                       <button className="text-gray-800  cursor-pointer">
-                        View product
+                        View service
                       </button>
                       <button className="text-gray-800 cursor-pointer">
-                        Buy again
+                        Book again
                       </button>
                     </div>
                   </div>
