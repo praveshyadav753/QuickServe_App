@@ -33,10 +33,10 @@ export default function Header() {
         <nav className="hidden lg:flex">
           <Navbar />
         </nav>
-
+        <Carticon  size={20}/>
         {/* Cart & User Section */}
-        <div className="flex items-center gap-6 ">
-          <Carticon  size={20}/>
+        <div className="flex items-center gap-10 ">
+          
 
           {isAuthenticated ? (
             <div className="relative">

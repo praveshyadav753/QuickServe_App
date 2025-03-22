@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'reviews',
     'auth_app',
     'cart',
+    'Booking_app',
     
     
 ]
