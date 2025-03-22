@@ -39,8 +39,8 @@ import CategoryDetail from "./component/Customer/Pages/servicepage/ServicesPage.
 import ServiceDetail from "./component/Customer/Pages/servicepage/Detailespage";
 import Subcategory from "./component/Customer/Pages/servicepage/Subcategory.jsx";
 import Cart from "./component/Customer/Pages/cart/cart.jsx";
-import Checkout from "./component/Customer/Pages/checkout/checkout.jsx";
-
+import CheckoutPage from "./component/Customer/Pages/checkout/CheckoutPage.jsx";
+import MyBookings from "./component/Customer/Pages/bookings/mybooking.jsx"
 import AdminDashboard from "./component/admin/Pages/adminDashboard.jsx";
 import Admin from "./component/admin/layouts/admin/index.jsx";
 import Dashboard from "./component/admin/Pages/adminDashboard.jsx";
@@ -70,10 +70,19 @@ const router = createBrowserRouter(
           path="/checkout"
           element={
             <ProtectRoute AuthenticationRequired={true} role={"customer"}>
-              <Checkout />
+              <CheckoutPage />
             </ProtectRoute>
           }
         />
+        <Route
+          path="/mybookings"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"customer"}>
+              <MyBookings />
+            </ProtectRoute>
+          }
+        />
+      
       </Route>
 
       <Route path="/Login" element={<Login />} />

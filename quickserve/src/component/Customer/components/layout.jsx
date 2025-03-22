@@ -8,7 +8,7 @@ const CustomerLayout = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <MobileNavbar />
-        <main className="flex-grow pt-10 max-w-full">
+        <main className="flex-grow  max-w-full">
           <Outlet />
         </main>
         <Footer />

@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+const storedToken = localStorage.getItem("token");
 
 // Initial state for authentication
 const initialState = {
   user: null, // store user data after login
-  isAuthenticated: false, // check if user is authenticated
+  isAuthenticated: !!storedToken, // check if user is authenticated
   loading: false, // track loading state during auth requests
   error: null, // store error messages if any
 };
@@ -30,6 +31,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
+      localStorage.clear();
     },
     // Action for loading state
     setLoading: (state) => {
@@ -46,7 +48,7 @@ const initialservices=[];
 
 const Services = createSlice({
   name: 'service',
-  reducer: {
+  reducers: {
     
     initialservices,
     addservice: (state,action)=>{
