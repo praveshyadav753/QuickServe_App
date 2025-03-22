@@ -30,8 +30,8 @@ function CustomerHomepage() {
   const [isLocationPopupOpen, setLocationPopupOpen] = useState(false);
 
   return (
-    <div className="p-0 flex flex-col gap-5">
-<div className={`${isLocationPopupOpen ? "opacity-10 pointer-events-none" : "opacity-100"}`}>
+    <div className="p-0 flex">
+<div className={`flex flex-col gap-5 ${isLocationPopupOpen ? "opacity-10 pointer-events-none" : "opacity-100"}`}>
 {/* Desktop Banner with Background Image */}
       <div
         className="relative hidden sm:flex h-screen w-full bg-cover bg-center items-center"
