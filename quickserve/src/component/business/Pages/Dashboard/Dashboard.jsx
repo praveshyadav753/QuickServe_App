@@ -3,9 +3,11 @@ import React from 'react'
 import CardDataStats from '../../components/cards/Cardstats';
 import ChartOne from '../../components/cards/chartone';
 import PageTitle from '../../../../pagetitle/pagetitle';
+import { useSelector } from 'react-redux';
 
 
 const BusinessDashboard = () => {
+  const {user}=useSelector((state)=>state.auth);
   return (
     <>
     <div className='flex flex-col gap-10'>

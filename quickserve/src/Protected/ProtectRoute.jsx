@@ -39,7 +39,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 function ProtectRoute({ children, AuthenticationRequired = true, role }) {
   const { isAuthenticated, user } = useSelector(state => state.auth); 
-  const userRole = user?.role || null;  // Ensure user exists before accessing role
+  const userRole = user?.role;  // Ensure user exists before accessing role
 
   const navigate = useNavigate();
   const location = useLocation(); // To remember where user was before redirecting

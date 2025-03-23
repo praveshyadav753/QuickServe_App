@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 const storedToken = localStorage.getItem("token");
+const user=JSON.parse(localStorage.getItem("user"))
 
 // Initial state for authentication
 const initialState = {
-  user: null, // store user data after login
+  user: user, // store user data after login
   isAuthenticated: !!storedToken, // check if user is authenticated
   loading: false, // track loading state during auth requests
   error: null, // store error messages if any
@@ -18,7 +19,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       state.loading = false;
-      localStorage.setItem("user",action.payload);
+      localStorage.setItem("user",JSON.stringify(action.payload));
 
     },
     // Action for login failure

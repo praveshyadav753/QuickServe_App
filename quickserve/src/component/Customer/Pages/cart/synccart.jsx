@@ -12,7 +12,7 @@ export const syncCartOnLogin = async (   dispatch) => {
   };
   try {
     // If guest cart has items, sync them with the backend
-    if (guestCart.length > 0) {
+    if (guestCart.length > 0 ) {
       const response = await axios.post(`http://127.0.0.1:8000/cart/sync/`, {  guestCart },{ headers });
       dispatch(setCart(response.data));
     }

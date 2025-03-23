@@ -3,8 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import ClickOutside from "../../../../../component/clickoutside";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../../features/reducers/Slice";
+import { useSelector } from "react-redux";
+import {User } from "lucide-react";
+
 
 const DropdownUser = () => {
+  const user =useSelector((state)=>state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -37,8 +41,8 @@ const DropdownUser = () => {
           className="flex items-center gap-4"
           to="#"
         >
-          <img className="w-8 h-8 rounded-full" src="/path-to-user-image.jpg" alt="User" />
-          <span className="hidden md:block font-medium text-sm text-gray-600">Username</span>
+          <User/>
+          <span className="hidden md:block font-medium text-sm text-gray-600">{user?.username}</span>
         </Link>
         {dropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg">

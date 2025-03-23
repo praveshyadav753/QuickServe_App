@@ -52,20 +52,21 @@
 // };
 
 // export default useApi;
+//-----------------------------------------------------------------------
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const apiClient = axios.create({
   baseURL: "http://127.0.0.1:8000", // Django backend URL
-  withCredentials: true, // Include cookies (if using session auth)
+  withCredentials: true, // Include cookies if needed
 });
 
-const useApi = (endpoint, method = "GET", body = null) => {
+const useApi = (endpoint) => {
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
-  const [retryTrigger, setRetryTrigger] = useState(0); // ✅ Track retries
+  const [data, setData] = useState([]);
+  const [retryTrigger, setRetryTrigger] = useState(0); // Track retries
 
   const fetchData = async () => {
     setLoading(true);
@@ -73,15 +74,13 @@ const useApi = (endpoint, method = "GET", body = null) => {
     setError(null);
 
     try {
-      console.log(`Fetching: ${endpoint} with ${method}`);
-      let response;
+      console.log(`Fetching: ${endpoint}`);
 
-      if (method === "POST") {
-        response = await apiClient.post(endpoint, body);
-      } else {
-        response = await apiClient.get(endpoint);
-      }
+      const token = localStorage.getItem("token"); // Get stored token
 
+      const headers = token ? { Authorization: `Bearer ${token}` } : {}; // Add Bearer token if available
+
+      const response = await apiClient.get(endpoint, { headers });
       setData(response.data);
     } catch (error) {
       if (error.response) {
@@ -103,9 +102,9 @@ const useApi = (endpoint, method = "GET", body = null) => {
     if (endpoint) {
       fetchData();
     }
-  }, [endpoint, method, body, retryTrigger]); // ✅ Re-fetch when retryTrigger changes
+  }, [endpoint, retryTrigger]); // Re-fetch when retryTrigger changes
 
-  const retry = () => setRetryTrigger((prev) => prev + 1); // ✅ Force re-fetch
+  const retry = () => setRetryTrigger((prev) => prev + 1); // Force re-fetch
 
   return { data, loading, isError, error, retry };
 };
