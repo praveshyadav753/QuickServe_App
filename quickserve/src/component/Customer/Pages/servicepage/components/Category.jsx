@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 
 
 const Categories = ({categories}) => {
-  console.log(categories)
  const navigate=useNavigate();
   return (
     <div className="w-full bg-gray-100 p-6">

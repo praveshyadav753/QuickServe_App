@@ -143,7 +143,7 @@ function CustomerHomepage() {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
       </div>
       {isLocationPopupOpen && (
           <LocationPopup
