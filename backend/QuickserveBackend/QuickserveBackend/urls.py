@@ -28,5 +28,7 @@ urlpatterns = [
     path('auth/',include('auth_app.urls')),
     path('cart/',include('cart.urls')),
     path('booking/',include('Booking_app.urls')),
+        path('reviews/',include('reviews.urls')),
+
 
 ]

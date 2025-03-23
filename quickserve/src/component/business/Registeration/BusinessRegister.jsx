@@ -117,8 +117,7 @@ const BusinessRegistration = () => {
       if (isError) {
         return <p className="text-center">{error}</p>;
       }
-      console.log("Form Data:", formData);
-    }
+          }
   };
 
   return (

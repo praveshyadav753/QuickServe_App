@@ -24,8 +24,7 @@ const Checkout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Order Submitted:", formData);
-  };
+      };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">

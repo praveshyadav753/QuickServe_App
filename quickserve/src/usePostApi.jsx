@@ -21,8 +21,7 @@ const usePostApi = () => {
     setLastRequest({ endpoint, body }); // ✅ Save last request
 
     try {
-      console.log(`Sending POST request to: ${endpoint}`);
-      const response = await apiClient.post(endpoint, body);
+            const response = await apiClient.post(endpoint, body);
       setData(response.data);
       return response.data;
     } catch (error) {

@@ -54,8 +54,7 @@ export const Step3 = ({formData,onChange,error}) => {
 
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
-//     console.log(formData);
-//   };
+//     //   };
 
   return (
     <div className="w-full flex items-center justify-center">

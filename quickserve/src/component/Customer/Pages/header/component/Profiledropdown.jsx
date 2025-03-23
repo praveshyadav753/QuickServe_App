@@ -15,8 +15,7 @@ const ProfileDropdown = ({ open, setOpen }) => {
     setOpen(false);
   }
   const handleLogout = () => {
-    console.log("Logging out...");
-    setLoading(true);
+        setLoading(true);
 
     // ✅ Dispatch logout action
     dispatch(logout());

@@ -4,8 +4,7 @@ import axios from "axios";
 export const syncCartOnLogin = async (   dispatch) => {
   console.log("synccc")
   const guestCart = JSON.parse(localStorage.getItem("cart")) || [];
-  // console.log("user:", userId);  
-  const token = localStorage.getItem("token"); 
+  //   const token = localStorage.getItem("token"); 
   const headers = {
     Authorization: `Bearer ${token}`, // Assuming JWT Token (Modify if needed)
     "Content-Type": "application/json",

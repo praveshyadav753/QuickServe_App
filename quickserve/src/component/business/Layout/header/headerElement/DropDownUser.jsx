@@ -15,8 +15,7 @@ const DropdownUser = () => {
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
-    console.log("Logging out...");
-    setLoading(true);
+        setLoading(true);
 
     // ✅ Clear stored token and user data
     localStorage.removeItem("token");

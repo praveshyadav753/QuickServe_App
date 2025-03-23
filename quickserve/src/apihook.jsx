@@ -24,8 +24,7 @@
 //       setError(null);
 
 //       try {
-//         console.log("fetching.....");
-//         const response = await apiClient.get(endpoint, { signal: controller.signal });
+//         //         const response = await apiClient.get(endpoint, { signal: controller.signal });
 //         setData(response.data);
 //       } catch (error) {
 //         if (!axios.isCancel(error)) {
@@ -74,9 +73,7 @@ const useApi = (endpoint) => {
     setError(null);
 
     try {
-      console.log(`Fetching: ${endpoint}`);
-
-      const token = localStorage.getItem("token"); // Get stored token
+            const token = localStorage.getItem("token"); // Get stored token
 
       const headers = token ? { Authorization: `Bearer ${token}` } : {}; // Add Bearer token if available
 

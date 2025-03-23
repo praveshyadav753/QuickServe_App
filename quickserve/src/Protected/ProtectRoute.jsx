@@ -15,11 +15,9 @@
 
 //   useEffect(() => {
 //     if (AuthenticationRequired && !authStatus) {
-//       console.log('Redirecting: Authentication required');
-//       navigate('/login');
+//       //       navigate('/login');
 //     } else if (AuthenticationRequired && authStatus && role !== userRole) {
-//       console.log(`Redirecting: Incorrect role. Expected ${role}, but got ${userRole}`);
-//       if (userRole === 'customer') navigate('/customer');
+//       //       if (userRole === 'customer') navigate('/customer');
 //       else if (userRole === 'Service Provider') navigate('/business');
 //       else if (userRole === 'admin') navigate('/admin');
 //     }
@@ -47,12 +45,10 @@ function ProtectRoute({ children, AuthenticationRequired = true, role }) {
 
   useEffect(() => {
     if (AuthenticationRequired && !isAuthenticated) {
-      console.log('Redirecting: Authentication required');
-      navigate('/login', { state: { from: location.pathname } }); // Store last visited page
+            navigate('/login', { state: { from: location.pathname } }); // Store last visited page
     } 
     else if (AuthenticationRequired && isAuthenticated && role && role !== userRole) {
-      console.log(`Redirecting: Incorrect role. Expected ${role}, but got ${userRole}`);
-      if (userRole === 'customer') navigate('/customer');
+            if (userRole === 'customer') navigate('/customer');
       else if (userRole === 'Service Provider') navigate('/business');
       else if (userRole === 'admin') navigate('/admin');
       else(navigate('/login'))
