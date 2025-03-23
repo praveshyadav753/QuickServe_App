@@ -11,11 +11,14 @@ const usePostApi = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
+  const [retryTrigger, setRetryTrigger] = useState(0); // ✅ Track retry attempts
+  const [lastRequest, setLastRequest] = useState(null); // ✅ Store last request
 
   const postData = async (endpoint, body) => {
     setLoading(true);
     setIsError(false);
     setError(null);
+    setLastRequest({ endpoint, body }); // ✅ Save last request
 
     try {
       console.log(`Sending POST request to: ${endpoint}`);
@@ -37,7 +40,14 @@ const usePostApi = () => {
     }
   };
 
-  return { data, loading, isError, error, postData };
+  const retry = () => {
+    if (lastRequest) {
+      setRetryTrigger((prev) => prev + 1); // ✅ Force re-execution
+      postData(lastRequest.endpoint, lastRequest.body); // ✅ Re-execute last request
+    }
+  };
+
+  return { data, loading, isError, error, postData, retry };
 };
 
 export default usePostApi;

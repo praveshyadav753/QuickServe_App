@@ -52,8 +52,6 @@
 // };
 
 // export default useApi;
-
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -67,49 +65,49 @@ const useApi = (endpoint, method = "GET", body = null) => {
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [retryTrigger, setRetryTrigger] = useState(0); // ✅ Track retries
+
+  const fetchData = async () => {
+    setLoading(true);
+    setIsError(false);
+    setError(null);
+
+    try {
+      console.log(`Fetching: ${endpoint} with ${method}`);
+      let response;
+
+      if (method === "POST") {
+        response = await apiClient.post(endpoint, body);
+      } else {
+        response = await apiClient.get(endpoint);
+      }
+
+      setData(response.data);
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.message || "An error occurred");
+      } else if (error.request) {
+        setError("Server unreachable. Please check your connection.");
+      } else if (error.message.includes("ERR_CONNECTION_REFUSED")) {
+        setError("Server is down. Try again later.");
+      } else {
+        setError(error.message);
+      }
+      setIsError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (!endpoint) return;
-    const controller = new AbortController();
+    if (endpoint) {
+      fetchData();
+    }
+  }, [endpoint, method, body, retryTrigger]); // ✅ Re-fetch when retryTrigger changes
 
-    (async () => {
-      setLoading(true);
-      setIsError(false);
-      setError(null);
+  const retry = () => setRetryTrigger((prev) => prev + 1); // ✅ Force re-fetch
 
-      try {
-        console.log(`Fetching: ${endpoint} with ${method}`);
-        let response;
-
-        if (method === "POST") {
-          response = await apiClient.post(endpoint, body, { signal: controller.signal });
-        } else {
-          response = await apiClient.get(endpoint, { signal: controller.signal });
-        }
-
-        setData(response.data);
-      } catch (error) {
-        if (!axios.isCancel(error)) {
-          if (error.response) {
-            setError(error.response.data.message || "An error occurred");
-          } else if (error.request) {
-            setError("Network error. Please check your connection.");
-          } else {
-            setError(error.message);
-          }
-          setIsError(true);
-        }
-      } finally {
-        setLoading(false);
-      }
-    })();
-
-    return () => {
-      controller.abort();
-    };
-  }, [endpoint, method, body]);
-
-  return { data, loading, isError, error };
+  return { data, loading, isError, error, retry };
 };
 
 export default useApi;

@@ -31,15 +31,16 @@ const Login = () => {
       );
   
       const { access_token, user } = response.data;
+
       dispatch(loginSuccess(user));
       localStorage.setItem("token", access_token);
 
       // Sync cart items after login
       syncCartOnLogin(dispatch);
-
+      
       // Redirect to previous page (if available) or default route
       const from = location.state?.from || (user.role === "Service Provider" ? "/business" : "/");
-      navigate(from, { replace: true }); // Redirect to stored route
+      navigate(from, { replace: true }); 
     } catch (error) {
       dispatch(loginFailure("Invalid email or password"));
       alert(error.response?.data?.error || "Network error. Please try again.");
