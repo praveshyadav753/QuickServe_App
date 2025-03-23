@@ -23,5 +23,6 @@ urlpatterns = [
     path('service/',include('services.urls')),
     path('auth/',include('auth_app.urls')),
     path('cart/',include('cart.urls')),
+    path('booking/',include('Booking_app.urls')),
 
 ]

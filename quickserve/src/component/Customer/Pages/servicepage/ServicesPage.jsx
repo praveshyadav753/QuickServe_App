@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 function CategoryDetail() {
   const {subcategory_id}=useParams()
   const {data,loading,error,isError}=useApi(`service/services/?subcategory_id=${subcategory_id}`)
-
+  
   return (
     <div>
         {loading? <div className='w-full flex justify-center items-center h-screen=true'><Loader/></div> :
