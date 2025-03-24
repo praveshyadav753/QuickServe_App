@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
 
+
 urlpatterns = [
 
     path("", lambda request: HttpResponse(""), name="home"),  # Empty response
@@ -29,6 +30,7 @@ urlpatterns = [
     path('cart/',include('cart.urls')),
     path('booking/',include('Booking_app.urls')),
         path('reviews/',include('reviews.urls')),
+        path('business/',include('business.urls')),
 
 
 ]

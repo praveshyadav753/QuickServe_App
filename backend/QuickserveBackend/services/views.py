@@ -6,21 +6,34 @@ from django.db import DatabaseError
 from django.shortcuts import get_object_or_404
 from .serializers import ServiceSerializer,ServiceDetailSerializer
 from core.models import Subcategory,Category
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from business.models import Business
 
 from business.models import Service
 
-class ServicesAPIView(APIView):  
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow public access but authenticate business users
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+class ServicesAPIView(APIView):
+    """Fetches services. Business users require authentication, public users do not."""
+    
+    authentication_classes = [JWTAuthentication]  # ✅ Use JWT authentication
+    
+    def get_permissions(self):
+        """Dynamically set permissions: 
+        - Public users: No authentication needed.
+        - Business users: Authentication required."""
+        
+        if self.request.query_params.get("role", "").lower() == "business":
+            return [IsAuthenticated()]  # Business users must be authenticated
+        return [AllowAny()]  # Public access allowed
 
     def get(self, request):
-        role = request.query_params.get("role", "").lower()  # Get role if provided, default to ""
+        role = request.query_params.get("role", "").lower()  
         subcategory_id = request.query_params.get("subcategory_id")
 
-        # 🏢 If role is 'business' and user is authenticated, return business services
+        # 🏢 Handle business user requests
         if role == "business":
-            print("business request")
             if not request.user.is_authenticated:
                 return Response({"error": "Authentication required for business services"}, status=status.HTTP_401_UNAUTHORIZED)
             
@@ -32,7 +45,7 @@ class ServicesAPIView(APIView):
             except Business.DoesNotExist:
                 return Response({"error": "Business not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # 🌎 If subcategory_id is provided, return public services filtered by subcategory
+        # 🌎 Handle public service requests by subcategory
         if subcategory_id:
             try:
                 subcategory = get_object_or_404(Subcategory, subcategory_id=subcategory_id)
@@ -43,10 +56,13 @@ class ServicesAPIView(APIView):
                 return Response({"error": "Subcategory not found"}, status=status.HTTP_404_NOT_FOUND)
 
         return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     
 class ServiceDetailView(APIView):
     """API to fetch detailed view of a service along with all reviews"""
+    authentication_classes = [] 
+
+    permission_classes = [AllowAny]
 
     def get(self, request, service_id):
         try:

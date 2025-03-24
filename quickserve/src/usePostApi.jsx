@@ -11,17 +11,25 @@ const usePostApi = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
-  const [retryTrigger, setRetryTrigger] = useState(0); // ✅ Track retry attempts
-  const [lastRequest, setLastRequest] = useState(null); // ✅ Store last request
-
-  const postData = async (endpoint, body) => {
+  const [retryTrigger, setRetryTrigger] = useState(0);
+  const [lastRequest, setLastRequest] = useState(null);
+  const postData = async (endpoint, body, token = null) => {
     setLoading(true);
     setIsError(false);
     setError(null);
-    setLastRequest({ endpoint, body }); // ✅ Save last request
+    setLastRequest({ endpoint, body });
 
     try {
-            const response = await apiClient.post(endpoint, body);
+      const token= localStorage.getItem('token');
+
+      const response = await apiClient.post(endpoint, body, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...(token && { Authorization: `Bearer ${token}` }), // Add Bearer token if available
+        },
+      });
+
       setData(response.data);
       return response.data;
     } catch (error) {
@@ -41,8 +49,8 @@ const usePostApi = () => {
 
   const retry = () => {
     if (lastRequest) {
-      setRetryTrigger((prev) => prev + 1); // ✅ Force re-execution
-      postData(lastRequest.endpoint, lastRequest.body); // ✅ Re-execute last request
+      setRetryTrigger((prev) => prev + 1);
+      postData(lastRequest.endpoint, lastRequest.body);
     }
   };
 

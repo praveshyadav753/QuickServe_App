@@ -53,6 +53,7 @@ function ProtectRoute({ children, AuthenticationRequired = true, role }) {
       else if (userRole === 'admin') navigate('/admin');
       else(navigate('/login'))
     }
+    
 
     setLoading(false); // Hide loader after redirection logic runs
   }, [isAuthenticated, userRole, navigate, AuthenticationRequired, role, location]);

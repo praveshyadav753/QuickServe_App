@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from .views import AddServiceView
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Django admin URL
-    path('insert/', include('core.urls')),  # Include app-specific URLs under 'insert/'
+    path("addservice/", AddServiceView.as_view(), name="user-business-reviews"),
 ]

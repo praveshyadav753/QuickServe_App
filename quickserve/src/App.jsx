@@ -58,29 +58,66 @@ import BusinessDetailPage from "./component/admin/Pages/businesmangement/Subpage
 import ContactSection from "./component/Customer/Pages/contact/Contactus.jsx";
 import { Loader2, LoaderPinwheel } from "lucide-react";
 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      
-
       {/* Public Route */}
       <Route path="/" element={<CustomerLayout />}>
-        <Route index element={<CustomerHomepage />} />
-        <Route path="/home" element={<CustomerHomepage />} />
-        <Route path="/contact-us" element={<ContactSection />} />
-        <Route path="/services" element={<ServicePage />} />
+        <Route
+          index
+          element={
+            
+              <CustomerHomepage />
+           
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <ProtectRoute role={"Customer"}>
+              <CustomerHomepage />{" "}
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/contact-us"
+          element={
+            <ProtectRoute role={"Customer"}>
+              <ContactSection />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="/services"
+          element={
+            <ProtectRoute role={"Customer"}>
+              <ServicePage />
+            </ProtectRoute>
+          }
+        />
         <Route
           path="/serviceDetail/:subcategory_id"
-          element={<CategoryDetail />}
+          element={
+            <ProtectRoute role={"Customer"}>
+              <CategoryDetail />
+            </ProtectRoute>
+          }
         />
         <Route
           path="/serviceDetail/viewDetails/:service_id"
-          element={<ServiceDetail />}
+          element={
+            <ProtectRoute role={"Customer"}>
+              <ServiceDetail />
+            </ProtectRoute>
+          }
         />
         <Route
           path="/category/subcategory/:category_id"
-          element={<Subcategory />}
+          element={
+            <ProtectRoute role={"Customer"}>
+              <Subcategory />
+            </ProtectRoute>
+          }
         />
         <Route path="/cart" element={<Cart />} />
         <Route
@@ -230,17 +267,87 @@ const router = createBrowserRouter(
       />
 
       <Route path="/admin" element={<Admin />}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="business" element={<Businesspage />} />
-        <Route path="service-requests" element={<Servicerequests />} />
-        <Route path="categories-subcategories" element={<CatandsubcatPage />} />
-        <Route path="users" element={<Userspage />} />
-        <Route path="bookings" element={<BookingsPage />} />
-        <Route path="settings" element={<SettingPage />} />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <Dashboard />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <Dashboard />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="business"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <Businesspage />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="service-requests"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <Servicerequests />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="categories-subcategories"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <CatandsubcatPage />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="users"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <Userspage />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="bookings"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <BookingsPage />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <SettingPage />
+            </ProtectRoute>
+          }
+        />
 
-        <Route path="details/:businessId" element={<BusinessDetailPage />} />
-        <Route path="orderdetail/:orderId" element={<OrderDetailsPage />} />
+        <Route
+          path="details/:businessId"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <BusinessDetailPage />
+            </ProtectRoute>
+          }
+        />
+        <Route
+          path="orderdetail/:orderId"
+          element={
+            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+              <OrderDetailsPage />
+            </ProtectRoute>
+          }
+        />
       </Route>
 
       <Route path="*" element={<NotFound />} />
@@ -249,10 +356,9 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  const { isError, error, retry, loading } = useApi("/"); // Use a test endpoint to check server status
 
-  const { isError, error,retry,loading  } = useApi("/"); // Use a test endpoint to check server status
-  
-  if(loading) return <Loader/>
+  // if (loading) return <Loader />;
   if (isError) return <ErrorBoundary message={error} onRetry={retry} />; // ✅ Retry now works
 
   return (

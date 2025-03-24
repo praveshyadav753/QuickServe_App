@@ -1,19 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import useApi from "../../../../../apihook";
+import Loader from "../../../../Customer/Pages/loader/loader";
+import usePostApi from "../../../../../usePostApi";
 
 const NewService = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("General");
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [serviceData, setServiceData] = useState({
-    serviceName: "",
+    service_name: "",
     description: "",
     address: "",
     category: "",
     subcategory: "",
     price: "",
-    availability: [], // Changed to an array to store selected days
+    availability: [],
     time: "",
   });
+  
+  // Fetch categories
+  let { loading, data } = useApi("/core/categories-get/");
+  useEffect(() => {
+    if (data) {
+      setCategories(data);
+    }
+  }, [data]);
+
+  // Fetch subcategories when category changes
+  useEffect(() => {
+    setSubcategories([]); // Reset subcategories
+    setServiceData((prev) => ({ ...prev, subcategory: "" })); // Reset selected subcategory
+    if (serviceData.category) {
+      fetchSubcategories(serviceData.category);
+    }
+  }, [serviceData.category]);
+
+  // Function to fetch subcategories
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/core/subcategory/${categoryId}/`
+      );
+      const result = await response.json();
+      setSubcategories(result);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +67,29 @@ const NewService = () => {
     });
   };
 
+  const {
+    loading: postLoading,
+    isError,
+    error,
+    data: pdata,
+    postData,
+  } = usePostApi();
+
+  const handleSubmit = async () => {
+    console.log("Service Data:", serviceData);
+    const response = await postData("business/addservice/", serviceData);
+    if (response) {
+      navigate("/business/services/");
+      
+    }
+    if(error)
+    {
+      return <div className="flex w-full justify-center text-red-500">An Error occurred ! please try again;
+      </div>
+    }
+    // Add API call to submit the form
+  };
+
   const daysOfWeek = [
     "Monday",
     "Tuesday",
@@ -42,24 +100,27 @@ const NewService = () => {
     "Sunday",
   ];
 
+  if (loading) return <Loader />;
+
   return (
     <div className="max-w-lg mx-auto dark:bg-gray-900 bg-gray-100 dark:text-white text-black p-6 rounded-lg shadow-lg">
       <div className="flex justify-between">
         <h2 className="text-2xl font-semibold mb-4">New Service</h2>
         <div
           className="cursor-pointer"
-          onClick={()=>navigate("/business/services")}
+          onClick={() => navigate("/business/services")}
         >
           x
         </div>
       </div>
+
       {/* Tabs */}
       <div className="flex border-b border-gray-700 text-black dark:text-white mb-4">
         <button
           onClick={() => setActiveTab("General")}
           className={`flex-1 py-2 text-center ${
             activeTab === "General"
-              ? "border-b-2 border-black dark:border-yellow-400 "
+              ? "border-b-2 border-black dark:border-yellow-400"
               : "text-gray-400"
           }`}
         >
@@ -83,8 +144,8 @@ const NewService = () => {
           <label className="block text-sm mb-1">Service Name</label>
           <input
             type="text"
-            name="serviceName"
-            value={serviceData.serviceName}
+            name="service_name"
+            value={serviceData.service_name}
             onChange={handleChange}
             className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
           />
@@ -112,22 +173,37 @@ const NewService = () => {
       {activeTab === "Other" && (
         <div>
           <label className="block text-sm mb-1">Category</label>
-          <input
-            type="text"
+          <select
             name="category"
             value={serviceData.category}
             onChange={handleChange}
             className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
-          />
+          >
+            <option value="">Select a category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
+          </select>
 
           <label className="block text-sm mb-1">Subcategory</label>
-          <input
-            type="text"
+          <select
             name="subcategory"
             value={serviceData.subcategory}
             onChange={handleChange}
             className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
-          />
+          >
+            <option value="">Select a subcategory</option>
+            {subcategories.map((subcategory) => (
+              <option
+                key={subcategory.subcategory_id}
+                value={subcategory.subcategory_id}
+              >
+                {subcategory.subcategory_name}
+              </option>
+            ))}
+          </select>
 
           <label className="block text-sm mb-1">Price (₹)</label>
           <input
@@ -138,7 +214,6 @@ const NewService = () => {
             className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
           />
 
-          {/* Updated Availability Section */}
           <label className="block text-sm mb-1">
             Availability (Select Days)
           </label>
@@ -170,14 +245,14 @@ const NewService = () => {
         </div>
       )}
 
-      {/* Save Button */}
       <button
-        className="w-full py-2 mt-4 dark:bg-yellow-500 bg-gray-600 dark:hover:bg-yellow-600 hover:bg-gray-800 text-white dark:text-black font-semibold rounded-md"
-        onClick={() => {
-          navigate("/business/services");
-        }}
+        className="w-full py-2 mt-4 bg-gray-600 hover:bg-gray-800 text-white font-semibold rounded-md"
+        onClick={
+          activeTab === "General" ? () => setActiveTab("Other") : handleSubmit
+        }
+        disabled={postLoading}
       >
-        Save Service
+        {postLoading ? "Adding..." : activeTab === "General" ? "Next" : "Add"}
       </button>
     </div>
   );
