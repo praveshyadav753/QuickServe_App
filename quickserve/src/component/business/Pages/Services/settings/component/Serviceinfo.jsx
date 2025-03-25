@@ -1,7 +1,35 @@
 import React from "react";
 import DeleteService from "./Deleteservice";
+import { useEffect,useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 function Serviceinfo() {
+  const {id}=useParams();
+    const [serviceData,setServiceData]=useState([]);
+  
+    const service = useSelector((state) =>
+    
+      state.services.service.find((s) => s.service_id == id)
+    );
+    console.log("services:", JSON.stringify(service, null, 2));
+    useEffect(() => {
+      if (service) {
+        setServiceData({
+          service_id: service.service_id || "",
+          service_name: service.service_name || "",
+          description: service.description || "",
+          image: service.image_url || "",
+          address: service.address || "",
+          category: service.Category || "",
+          subcategory: service.subcategory || "",
+          price: service.price || "",
+          availability: service.availability || [],
+          time: service.time || "",
+        });
+      }
+    }, [service]);
+  
   return (
     <div className="w-full h-full dark:text-gray-200  text-gray-900 flex flex-col items-center ">
       <div className="m-auto pt-0 p-3 w-full ">
@@ -18,6 +46,7 @@ function Serviceinfo() {
                 type="text"
                 id="name"
                 name="name"
+                defaultValue={serviceData.service_name}
                 className="border border-gray-300 dark:border-gray-900 dark:bg-gray-700 rounded-md p-2"
               />
             </div>
@@ -29,6 +58,7 @@ function Serviceinfo() {
               <textarea
                 id="description"
                 name="description"
+                defaultValue={serviceData.description}
                 className="border border-gray-300 dark:border-gray-900 dark:bg-gray-700 rounded-md p-2 resize-none"
                 rows="3"
               />
@@ -41,21 +71,26 @@ function Serviceinfo() {
               <input
                 type="text"
                 id="address"
+                defaultValue={serviceData.address}
                 name="address"
                 className="border border-gray-300 dark:border-gray-900 dark:bg-gray-700 rounded-md p-2"
               />
             </div>
-
-            <div className="flex flex-col">
+            <div className="flex gap-15 items-center overflow-hidden">
+              <img className="bg-gray-400 h-15 w-15 rounded" src={serviceData.image} alt="" />
+            <div className="flex flex-col gap-2">
+              
               <label className="font-semibold " htmlFor="logo">
-                Logo URL
+                Image URL
               </label>
               <input
                 type="text"
                 id="logo"
+                defaultValue={serviceData.image}
                 name="logo"
                 className="border border-gray-300 dark:border-gray-900 dark:bg-gray-700 rounded-md p-2"
               />
+              </div>
             </div>
 
             <div className="flex flex-col">
@@ -66,6 +101,7 @@ function Serviceinfo() {
                 type="text"
                 id="pincode"
                 name="pincode"
+                defaultValue={serviceData.pincode}
                 className="border border-gray-300 dark:border-gray-900 dark:bg-gray-700 rounded-md p-2"
               />
             </div>

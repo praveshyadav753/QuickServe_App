@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 const Sidebar = () => {
   const menuItems = [
     { name: "General", path: "general" },
-    { name: "Category", path: "category" },
+    { name: "Other", path: "category" },
     { name: "Remove Service", path: "delete" },
   ];
 

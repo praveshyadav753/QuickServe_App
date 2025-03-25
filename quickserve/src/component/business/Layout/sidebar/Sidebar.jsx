@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 // import Logo from '../../images/logo/logo.svg';
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  const authstatus = useSelector((state) => state.authStatus);
-  console.log(authstatus)
+  const authstatus = useSelector((state) => state.auth.isAuthenticated);
   const location = useLocation();
   const { pathname } = location;
 

@@ -10,8 +10,10 @@ const NewService = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [serviceData, setServiceData] = useState({
+    service_id:"",
     service_name: "",
     description: "",
+    image:"",
     address: "",
     category: "",
     subcategory: "",
@@ -181,7 +183,7 @@ const NewService = () => {
           >
             <option value="">Select a category</option>
             {categories.map((category) => (
-              <option key={category.id} value={category.category_id}>
+              <option key={category.category_id} value={category.category_id}>
                 {category.category_name}
               </option>
             ))}

@@ -146,7 +146,7 @@ const router = createBrowserRouter(
         <Route path="business" element={<RegistrationPage />} />
         <Route path="customer" element={<UserRegistrationPage />} />
       </Route>
-
+      {/* ______________________________________________________________________________________________________________________________________________________} */}
       {/*----------------------------------------------service provier-------------------------------------------------------- */}
 
       <Route path="/business" element={<Layout />}>

@@ -1,201 +1,172 @@
 import React, { useState } from "react";
+import useApi from "../../../../../../apihook";
+import usePostApi from "../../../../../../usePostApi";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 
 const Category = () => {
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      name: "Food",
-      price: null,
-      availability: {
-        Mon: true,
-        Tue: true,
-        Wed: true,
-        Thu: true,
-        Fri: true,
-        Sat: false,
-        Sun: false,
-      },
-      subcategories: [
-        { id: 101, name: "Snacks", price: 50 },
-        { id: 102, name: "Beverages", price: 30 },
-      ],
-    },
-    {
-      id: 2,
-      name: "Electronics",
-      price: 2000,
-      availability: {
-        Monday: true,
-        Tuesday: true,
-        Wednesday: true,
-        Thursday: true,
-        Friday: true,
-        Saturday: false,
-        Sunday: false,
-      },
-      subcategories: [],
-    },
-  ]);
+  const {id} = useParams();
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [serviceData, setServiceData] = useState({
+    service_id: "",
+    service_name: "",
+    description: "",
+    image: "",
+    address: "",
+    category: "",
+    subcategory: "",
+    price: "",
+    availability: [],
+    time: "",
+  });
 
-  const [newCategory, setNewCategory] = useState("");
-  const [newSubcategory, setNewSubcategory] = useState({});
-  const [newPrice, setNewPrice] = useState({});
+  const daysOfWeek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
-  const addCategory = () => {
-    if (newCategory.trim() === "") return;
-    setCategories((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        name: newCategory,
-        price: null,
-        availability: {
-          Monday: true,
-          Tuesday: true,
-          Wednesday: true,
-          Thursday: true,
-          Friday: true,
-          Saturday: false,
-          Sunday: false,
-        },
-        subcategories: [],
-      },
-    ]);
-    setNewCategory("");
+  
+  
+  let { loading, data } = useApi("/core/categories-get/");
+  useEffect(() => {
+    if (data) {
+      setCategories(data);
+    }
+  }, [data]);
+  
+  const service = useSelector((state) =>
+  
+    state.services.service.find((s) => s.service_id == id)
+  );
+  console.log("services:", JSON.stringify(service, null, 2));
+  useEffect(() => {
+    if (service) {
+      setServiceData({
+        service_id: service.service_id || "",
+        service_name: service.service_name || "",
+        description: service.description || "",
+        image: service.image || "",
+        address: service.address || "",
+        category: service.Category || "",
+        subcategory: service.subcategory || "",
+        price: service.price || "",
+        availability: service.availability || [],
+        time: service.time || "",
+      });
+    }
+  }, [service]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setServiceData({ ...serviceData, [name]: value });
+  };
+  const handleAvailabilityChange = (day) => {
+    setServiceData((prevState) => {
+      const isSelected = prevState.availability.includes(day);
+      return {
+        ...prevState,
+        availability: isSelected
+          ? prevState.availability.filter((d) => d !== day)
+          : [...prevState.availability, day],
+      };
+    });
   };
 
-  const addSubcategory = (categoryId) => {
-    if (!newSubcategory[categoryId] || newSubcategory[categoryId].trim() === "") return;
-    setCategories((prev) =>
-      prev.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              subcategories: [
-                ...category.subcategories,
-                {
-                  id: Date.now(),
-                  name: newSubcategory[categoryId],
-                  price: newPrice[categoryId] || 0,
-                },
-              ],
-            }
-          : category
-      )
-    );
-    setNewSubcategory((prev) => ({ ...prev, [categoryId]: "" }));
-    setNewPrice((prev) => ({ ...prev, [categoryId]: "" }));
+  // Fetch subcategories when category changes
+  useEffect(() => {
+    setSubcategories([]); // Reset subcategories
+    if (serviceData.category) {
+      fetchSubcategories(serviceData.category);
+    }
+  }, [serviceData.category]);
+
+  // Function to fetch subcategories
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/core/subcategory/${categoryId}/`
+      );
+      const result = await response.json();
+      setSubcategories(result);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
   };
 
-  const deleteCategory = (categoryId) => {
-    setCategories((prev) => prev.filter((category) => category.id !== categoryId));
-  };
+  
 
-  const deleteSubcategory = (categoryId, subcategoryId) => {
-    setCategories((prev) =>
-      prev.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              subcategories: category.subcategories.filter((sub) => sub.id !== subcategoryId),
-            }
-          : category
-      )
-    );
-  };
-
-  const toggleAvailability = (categoryId, day) => {
-    setCategories((prev) =>
-      prev.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              availability: {
-                ...category.availability,
-                [day]: !category.availability[day],
-              },
-            }
-          : category
-      )
-    );
-  };
 
   return (
     <div className="px-6 py-3 bg-gray-50 dark:bg-gray-700 dark:text-white text-black min-h-screen">
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Manage Categories</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+        Other Details
+      </h2>
 
-      <div className="flex gap-2 mb-4 ">
-        <input
-          type="text"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-          placeholder="New Category Name"
-          className="p-2 border rounded dark:bg-gray-800 w-full"
-        />
-        <button onClick={addCategory} className="bg-blue-500 text-white px-4 py-2 whitespace-nowrap rounded">
-          Add Category
-        </button>
-      </div>
-
-      <div className="space-y-4">
+      <label className="block text-sm mb-1">Category</label>
+      <select
+        name="category"
+        value={serviceData.category}
+        onChange={handleChange}
+        className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
+      >
+        <option value="">Select a category</option>
         {categories.map((category) => (
-          <div key={category.id} className="bg-white dark:bg-gray-600 shadow p-4 rounded-lg">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">{category.name}</h3>
-              <button onClick={() => deleteCategory(category.id)} className="bg-red-500 text-white px-3 py-1 rounded">
-                Delete
-              </button>
-            </div>
-
-            <div className="mt-3">
-              <h4 className="font-medium">Availability:</h4>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {Object.keys(category.availability).map((day) => (
-                  <button
-                    key={day}
-                    onClick={() => toggleAvailability(category.id, day)}
-                    className={`px-3 py-1 rounded  ${category.availability[day] ? "bg-green-700" : "bg-gray-400"}`}
-                  >
-                    {day}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-3 flex gap-2">
-              <input
-                type="text"
-                value={newSubcategory[category.id] || ""}
-                onChange={(e) => setNewSubcategory({ ...newSubcategory, [category.id]: e.target.value })}
-                placeholder="Subcategory Name"
-                className="p-2 border rounded dark:bg-gray-800 w-full"
-              />
-              <input
-                type="number"
-                value={newPrice[category.id] || ""}
-                onChange={(e) => setNewPrice({ ...newPrice, [category.id]: e.target.value })}
-                placeholder="Price"
-                className="p-2 border rounded dark:bg-gray-800  w-24"
-              />
-              <button onClick={() => addSubcategory(category.id)} className="bg-blue-400 text-white px-4 py-2 rounded">
-                Add
-              </button>
-            </div>
-
-            {category.subcategories.length > 0 && (
-              <ul className="mt-3 space-y-2">
-                {category.subcategories.map((sub) => (
-                  <li key={sub.id} className="flex justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded">
-                    <span>{sub.name} - ₹{sub.price}</span>
-                    <button onClick={() => deleteSubcategory(category.id, sub.id)} className="bg-red-400 text-white px-3 py-1 rounded">
-                      Delete
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <option key={category.id} value={category.category_id}>
+            {category.category_name}
+          </option>
         ))}
+      </select>
+
+      <label className="block text-sm mb-1">Subcategory</label>
+      <select
+        name="subcategory"
+        value={serviceData.subcategory}
+        onChange={handleChange}
+        className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
+      >
+        <option value="">Select a subcategory</option>
+        {subcategories.map((subcategory) => (
+          <option
+            key={subcategory.subcategory_id}
+            value={subcategory.subcategory_id}
+          >
+            {subcategory.subcategory_name}
+          </option>
+        ))}
+      </select>
+      <label className="block text-sm mb-1">Price (₹)</label>
+          <input
+            type="number"
+            name="price"
+            value={serviceData.price}
+            onChange={handleChange}
+            className="w-full p-2 dark:bg-gray-800 bg-white border border-gray-700 rounded-md mb-3"
+          />
+      <div className="space-y-4">
+        <label className="block text-sm mb-1">Availability (Select Days)</label>
+        <div className="flex flex-wrap gap-2 mb-3">
+          {daysOfWeek.map((day) => (
+            <button
+              key={day}
+              onClick={() => handleAvailabilityChange(day)}
+              className={`px-3 py-1 rounded-md border transition-all ${
+                serviceData.availability.includes(day)
+                  ? "dark:bg-yellow-500 bg-gray-700 dark:text-black text-white dark:border-yellow-500"
+                  : "dark:bg-gray-800 bg-white dark:text-white border-gray-600 hover:bg-gray-700"
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
