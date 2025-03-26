@@ -27,7 +27,7 @@ const serviceSlice = createSlice({
       state.service.push(action.payload);
     },
     removeService: (state, action) => {
-      state.service = state.service.filter((s) => s.service_id !== action.payload);
+      state.service = state.service.filter((s) => s.service_id !== action.payload.service_id);
     },
     updateService: (state, action) => {
       const { id, updatedData } = action.payload;

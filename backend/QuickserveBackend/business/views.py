@@ -54,3 +54,30 @@ class AddServiceView(APIView):
         )
 
         return Response({"message": "Service added successfully!", "service_id": service.service_id}, status=status.HTTP_201_CREATED)
+
+
+
+
+
+class DeleteServiceView(APIView):
+    permission_classes = [IsAuthenticated]  # ✅ Requires authentication
+
+    def delete(self, request, service_id):
+        try:
+            # ✅ Get the service object
+            service = Service.objects.get(service_id=service_id)
+            
+            business = Business.objects.get(user=request.user)
+            if request.user != business.user:
+                return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+            # ✅ Delete the service
+            service.delete()
+
+            return Response({"message": "Service deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+        except Service.DoesNotExist:
+            return Response({"error": "Service not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

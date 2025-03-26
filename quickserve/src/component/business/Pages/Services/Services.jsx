@@ -4,7 +4,7 @@ import PageTitle from "../../../../pagetitle/pagetitle";
 import ServicesHeader from "../../components/servicescomponent/ServicesHeader";
 import { useNavigate } from "react-router";
 import useApi from "../../../../apihook";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { setService } from "../../../../features/reducers/ServiceSlice";
 
 function Services() {
