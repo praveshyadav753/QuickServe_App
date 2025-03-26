@@ -47,24 +47,6 @@ const authSlice = createSlice({
 
   
   
-const initialservices=[];
-
-const Services = createSlice({
-  name: 'service',
-  reducers: {
-    
-    initialservices,
-    addservice: (state,action)=>{
-       
-    },
-    removeService: (state,action)=>{
-      
-    },
-    updateService: (state,action)=>{
-  },
-}
-});
-
 // Export actions
 export const { loginSuccess, loginFailure, logout, setLoading } = authSlice.actions;
 

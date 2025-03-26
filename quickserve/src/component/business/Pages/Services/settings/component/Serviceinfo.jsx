@@ -3,9 +3,14 @@ import DeleteService from "./Deleteservice";
 import { useEffect,useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { fetchServices } from "../../../../../../features/reducers/ServiceSlice";
 
 function Serviceinfo() {
   const {id}=useParams();
+
+  // useEffect(() => {
+  //   dispatch(fetchServices());
+  // }, [dispatch]);
     const [serviceData,setServiceData]=useState([]);
   
     const service = useSelector((state) =>

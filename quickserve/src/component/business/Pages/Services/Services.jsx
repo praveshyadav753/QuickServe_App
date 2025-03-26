@@ -5,14 +5,14 @@ import ServicesHeader from "../../components/servicescomponent/ServicesHeader";
 import { useNavigate } from "react-router";
 import useApi from "../../../../apihook";
 import { useDispatch } from "react-redux";
-import { setservice } from "../../../../features/reducers/ServiceSlice";
+import { setService } from "../../../../features/reducers/ServiceSlice";
 
 function Services() {
   const dispatch = useDispatch();
   const { data, loading } = useApi("/service/services/?role=business");
   useEffect(() => {
     if (data && !loading) {
-      dispatch(setservice(data.services)); 
+      dispatch(setService(data.services)); 
     }
   }, [data, loading, dispatch]);
 
