@@ -104,6 +104,8 @@
 // };
 import React, { useState } from "react";
 import { CheckCircle, XCircle, Pencil } from "lucide-react";
+import useApi from "../../../apihook";
+import { useEffect, } from "react";
 
 const serviceRequestsData = [
   {
@@ -131,6 +133,15 @@ const ServiceRequests = () => {
   const [editing, setEditing] = useState(null);
   const [editData, setEditData] = useState({});
 
+  const { loading, data } = useApi("/adminpanel/service-requests/");
+ 
+
+  useEffect(() => {
+    if (data) {
+      setRequests(data);
+    }
+  }, [data]);
+
   const handleStatusChange = (id, newStatus) => {
     setRequests(
       requests.map((req) =>
@@ -157,22 +168,20 @@ const ServiceRequests = () => {
       <table className="w-full bg-gray-800 rounded-lg overflow-hidden">
         <thead className="bg-gray-700 text-gray-200">
           <tr>
-            <th className="p-3 text-left">Service Name</th>
+            <th className="p-3 text-left"> Id</th>
             <th className="p-3 text-left">Business</th>
-            <th className="p-3 text-left">Category</th>
-            <th className="p-3 text-left">Description</th>
-            <th className="p-3 text-left">Status</th>
             <th className="p-3 text-left">Date</th>
+            <th className="p-3 text-left">Status</th>
+
             <th className="p-3 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {requests.map((req) => (
             <tr key={req.id} className="border-b border-gray-700">
-              <td className="p-3">{req.serviceName}</td>
-              <td className="p-3">{req.businessName}</td>
-              <td className="p-3">{req.category}</td>
-              <td className="p-3">{req.description}</td>
+              <td className="p-3">{req.business_id}</td>
+              <td className="p-3">{req.business_name}</td>
+              <td className="p-3">{req.created_at}</td>
               <td
                 className={`p-3 font-bold ${
                   req.status === "Approved"
@@ -184,9 +193,8 @@ const ServiceRequests = () => {
               >
                 {req.status}
               </td>
-              <td className="p-3">{req.date}</td>
               <td className="p-3 flex gap-2">
-                {req.status === "Pending" && (
+                {req.status === "pending" && (
                   <>
                     <button
                       className="bg-green-600 p-2 rounded text-white"
@@ -216,7 +224,7 @@ const ServiceRequests = () => {
 
       {editing && (
         <div className="mt-6 p-4 bg-gray-700 rounded">
-          <h3 className="text-xl mb-4">Edit Service Request</h3>
+          <h3 className="text-xl mb-4">Edit Business Request</h3>
           <input
             type="text"
             className="w-full p-2 mb-2 bg-gray-800 text-white rounded"

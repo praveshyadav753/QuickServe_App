@@ -5,6 +5,12 @@ from QuickserveBackend.models import User
 from core.models import Category,Subcategory
 
 class Business(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+    
     business_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pincode = models.CharField(max_length=6,null=True)
@@ -12,6 +18,7 @@ class Business(models.Model):
     address = models.TextField()
     contact_info = models.CharField(max_length=255)
     logo_url = models.URLField(blank=True, null=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

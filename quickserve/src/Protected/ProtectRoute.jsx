@@ -1,5 +1,3 @@
-
-
 // import React, { useState, useEffect } from 'react';
 // import { useSelector } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
@@ -9,7 +7,7 @@
 //   console.log(authState)
 //   const { isAuthenticated: authStatus, user } = useSelector((state) => state.auth);
 //   const userRole = user ? user.role : null; // Ensure user exists before accessing role
-  
+
 //   const navigate = useNavigate();
 //   const [loader, setLoader] = useState(true);
 
@@ -31,13 +29,13 @@
 
 // export default ProtectRoute;
 
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ProtectRoute({ children, AuthenticationRequired = true, role }) {
-  const { isAuthenticated, user } = useSelector(state => state.auth); 
-  const userRole = user?.role;  // Ensure user exists before accessing role
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const userRole = user?.role; // Ensure user exists before accessing role
 
   const navigate = useNavigate();
   const location = useLocation(); // To remember where user was before redirecting
@@ -45,18 +43,31 @@ function ProtectRoute({ children, AuthenticationRequired = true, role }) {
 
   useEffect(() => {
     if (AuthenticationRequired && !isAuthenticated) {
-            navigate('/login', { state: { from: location.pathname } }); // Store last visited page
-    } 
-    else if (AuthenticationRequired && isAuthenticated && role && role !== userRole) {
-            if (userRole === 'customer') navigate('/customer');
-      else if (userRole === 'Service Provider') navigate('/business');
-      else if (userRole === 'admin') navigate('/admin');
-      else(navigate('/login'))
+      navigate("/login", { state: { from: location.pathname } }); // Store last visited page
+    } else if (
+      AuthenticationRequired &&
+      isAuthenticated &&
+      role 
+      &&
+      role !== userRole
+    ) {
+      if (userRole === "customer") navigate("/customer");
+      else if (userRole === "Service Provider") navigate("/business") ;
+      
+      else if (userRole === "Admin") navigate("/admin");
+
+      else navigate("/login");
     }
-    
 
     setLoading(false); // Hide loader after redirection logic runs
-  }, [isAuthenticated, userRole, navigate, AuthenticationRequired, role, location]);
+  }, [
+    isAuthenticated,
+    userRole,
+    navigate,
+    AuthenticationRequired,
+    role,
+    location,
+  ]);
 
   return loading ? <h1>Loading...</h1> : <>{children}</>;
 }

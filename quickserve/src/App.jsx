@@ -270,7 +270,7 @@ const router = createBrowserRouter(
         <Route
           path="dashboard"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <Dashboard />
             </ProtectRoute>
           }
@@ -278,7 +278,7 @@ const router = createBrowserRouter(
         <Route
           path="dashboard"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <Dashboard />
             </ProtectRoute>
           }
@@ -286,7 +286,7 @@ const router = createBrowserRouter(
         <Route
           path="business"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <Businesspage />
             </ProtectRoute>
           }
@@ -294,7 +294,7 @@ const router = createBrowserRouter(
         <Route
           path="service-requests"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <Servicerequests />
             </ProtectRoute>
           }
@@ -302,7 +302,7 @@ const router = createBrowserRouter(
         <Route
           path="categories-subcategories"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <CatandsubcatPage />
             </ProtectRoute>
           }
@@ -310,7 +310,7 @@ const router = createBrowserRouter(
         <Route
           path="users"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <Userspage />
             </ProtectRoute>
           }
@@ -318,7 +318,7 @@ const router = createBrowserRouter(
         <Route
           path="bookings"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <BookingsPage />
             </ProtectRoute>
           }
@@ -326,7 +326,7 @@ const router = createBrowserRouter(
         <Route
           path="settings"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <SettingPage />
             </ProtectRoute>
           }
@@ -335,7 +335,7 @@ const router = createBrowserRouter(
         <Route
           path="details/:businessId"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <BusinessDetailPage />
             </ProtectRoute>
           }
@@ -343,7 +343,7 @@ const router = createBrowserRouter(
         <Route
           path="orderdetail/:orderId"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"admin"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Admin"}>
               <OrderDetailsPage />
             </ProtectRoute>
           }

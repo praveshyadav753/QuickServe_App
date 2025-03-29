@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'auth_app',
     'cart',
     'Booking_app',
+    'adminpanel',
     
     
 ]

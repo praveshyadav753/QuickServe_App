@@ -40,13 +40,21 @@ const Login = () => {
       localStorage.setItem("token", access_token);
       
       // Sync cart items after login
+      if(user.role === "customer")
       syncCartOnLogin(dispatch);
 
       // Redirect to previous page (if available) or default route
-      const from =
-        location.state?.from ||
-        (user.role === "Service Provider" ? "/business" : "/");
-      navigate(from, { replace: true });
+      let redirectPath;
+      if (user.role === "Admin") {
+        redirectPath = "/admin"; // Always redirect Admins to the admin panel
+      } else if (user.role === "Service Provider") {
+        redirectPath = "/business"; // Always redirect Service Providers to their dashboard
+      } else {
+        redirectPath = location.state?.from || "/"; // Regular users go back or to the homepage
+      }
+  
+      navigate(redirectPath, { replace: true });
+      // navigate(from, { replace: true });
     } catch (error) {
       dispatch(loginFailure("Invalid email or password"));
       alert(error.response?.data?.error || "Network error. Please try again.");

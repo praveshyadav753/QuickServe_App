@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LayoutDashboard, Building, ClipboardCheck, ListTree, Users, FileBarChart, Settings } from "lucide-react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS,CategoryScale , LineElement, PointElement, LinearScale, Title, Tooltip, Legend } from 'chart.js';
-
+import  useApi from "../../../apihook"
 ChartJS.register(LineElement,CategoryScale, PointElement, LinearScale, Title, Tooltip, Legend);
 
 const Dashboard = () => {
+  const[stats,setstats]=useState([]);
+  const {data,loading,error} = useApi("/adminpanel/stats/");
+  useEffect(()=>{
+    if(data){
+      setstats(data)
+    }
+  })
+  
+
   const visitorData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
     datasets: [
@@ -25,11 +34,11 @@ const Dashboard = () => {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <DashboardCard title="Total Businesses" count={120} icon={<Building size={32} />} color="bg-blue-100 " />
-        <DashboardCard title="Pending Approvals" count={15} icon={<ClipboardCheck size={32} />} color="bg-yellow-100" />
-        <DashboardCard title="Total Categories" count={10} icon={<ListTree size={32} />} color="bg-green-100" />
-        <DashboardCard title="Total Users" count={500} icon={<Users size={32} />} color="bg-purple-100" />
-        <DashboardCard title="Reports Generated" count={45} icon={<FileBarChart size={32} />} color="bg-red-100" />
+        <DashboardCard title="Total Businesses" count={stats?.total_businesses||0} icon={<Building size={32} />} color="bg-blue-100" />
+        <DashboardCard title="Pending Approvals" count={stats?.pending_approvals||0} icon={<ClipboardCheck size={32} />} color="bg-yellow-100" />
+        <DashboardCard title="Total Categories" count={stats?.total_categories||0} icon={<ListTree size={32} />} color="bg-green-100" />
+        <DashboardCard title="Total Users" count={stats?.total_users||0} icon={<Users size={32} />} color="bg-purple-100" />
+        <DashboardCard title="Reports Generated" count={stats?.total_reports||0} icon={<FileBarChart size={32} />} color="bg-red-100" />
       </div>
 
       {/* Visitors Graph */}

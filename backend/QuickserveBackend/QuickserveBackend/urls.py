@@ -31,6 +31,7 @@ urlpatterns = [
     path('booking/',include('Booking_app.urls')),
         path('reviews/',include('reviews.urls')),
         path('business/',include('business.urls')),
+        path('adminpanel/',include('adminpanel.urls')),
 
 
 ]
