@@ -113,13 +113,13 @@ class ServiceRequestView(APIView):
 
     def post(self, request, *args, **kwargs):
         """Update the status of a business (approve/reject)."""
-        business_id = request.data.get("id")
+        business_id = request.data.get("business_id")
         new_status = request.data.get("status")
 
         if new_status not in ["Approved", "Rejected"]:
             return Response({"error": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
 
-        business = get_object_or_404(Business, id=business_id)
+        business = get_object_or_404(Business, business_id=business_id)
         business.status = new_status
         business.save()
 
