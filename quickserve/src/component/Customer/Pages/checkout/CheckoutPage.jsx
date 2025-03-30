@@ -31,35 +31,35 @@ export default function CheckoutPage() {
           <div className="space-y-4">
             <div className="flex justify-between">
               <span>Jeans Pant</span>
-              <span className="font-semibold">$36.00</span>
+              <span className="font-semibold">₹36.00</span>
             </div>
             <div className="flex justify-between">
               <span>Circular Sienna</span>
-              <span className="font-semibold">$36.00</span>
+              <span className="font-semibold">₹36.00</span>
             </div>
             <div className="flex justify-between">
               <span>Black T-shirt</span>
-              <span className="font-semibold">$36.00</span>
+              <span className="font-semibold">₹36.00</span>
             </div>
           </div>
           <hr className="my-4" />
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>${totalAmount.toFixed(2)}</span>
+              <span>₹{totalAmount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
-              <span>${shippingCost.toFixed(2)}</span>
+              <span>₹{shippingCost.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-red-500">
               <span>Discount</span>
-              <span>-${discount.toFixed(2)}</span>
+              <span>-₹{discount.toFixed(2)}</span>
             </div>
             <hr />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>${finalTotal.toFixed(2)}</span>
+              <span>₹{finalTotal.toFixed(2)}</span>
             </div>
           </div>
         </div>

@@ -22,11 +22,11 @@ const PaymentPage = () => {
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-4 mb-6">
         <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
         <p>Items: <span className="font-medium">3</span></p>
-        <p>Subtotal: <span className="font-medium">$108</span></p>
-        <p>Shipping: <span className="font-medium">$10.85</span></p>
-        <p>Discount: <span className="font-medium">-$9</span></p>
+        <p>Subtotal: <span className="font-medium">₹108</span></p>
+        <p>Shipping: <span className="font-medium">₹10.85</span></p>
+        <p>Discount: <span className="font-medium">-₹9</span></p>
         <hr className="my-2" />
-        <p className="text-xl font-bold">Total: $88.15</p>
+        <p className="text-xl font-bold">Total: ₹88.15</p>
       </div>
 
       {/* Payment Methods */}
@@ -36,7 +36,7 @@ const PaymentPage = () => {
         {/* Payment Options */}
         <div className="space-y-2">
           <button
-            className={`w-full p-2 rounded-lg border ${paymentMethod === "card" ? "bg-indigo-600 text-white" : ""}`}
+            className={`w-full p-2 rounded-lg border ₹{paymentMethod === "card" ? "bg-indigo-600 text-white" : ""}`}
             onClick={() => setPaymentMethod("card")}
           >
             Credit/Debit Card
