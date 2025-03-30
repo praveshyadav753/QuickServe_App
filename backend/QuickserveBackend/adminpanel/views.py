@@ -124,3 +124,66 @@ class ServiceRequestView(APIView):
         business.save()
 
         return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
+
+
+# _____________________________________________________
+
+
+from .serializers import CategorySerializer, SubcategorySerializer
+class CategorySubcategoryView(APIView):
+    def get(self, request):
+        categories = Category.objects.prefetch_related('subcategory_set').all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = request.data
+        response_data = {}
+        
+        # Handle Category creation
+        if 'category' in data:
+            category_serializer = CategorySerializer(data=data['category'])
+            if not category_serializer.is_valid():
+                return Response(
+                    {'category_errors': category_serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            category = category_serializer.save()
+            response_data['category'] = category_serializer.data
+
+        # Handle Subcategory creation
+        if 'subcategory' in data:
+            if 'category' not in data['subcategory']:
+                return Response(
+                    {'error': 'category field is required for subcategory creation'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+                
+            try:
+                category = Category.objects.get(category_id=data['subcategory']['category'])
+            except Category.DoesNotExist:
+                return Response(
+                    {'error': 'Specified category does not exist'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+                
+            # Remove category from subcategory data before serialization
+            subcategory_data = data['subcategory'].copy()
+            subcategory_data.pop('category', None)
+            
+            subcategory_serializer = SubcategorySerializer(data=subcategory_data)
+            if not subcategory_serializer.is_valid():
+                return Response(
+                    {'subcategory_errors': subcategory_serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            subcategory = subcategory_serializer.save(category=category)
+            response_data['subcategory'] = subcategory_serializer.data
+
+        if not response_data:
+            return Response(
+                {'error': 'No valid data provided for creation'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(response_data, status=status.HTTP_201_CREATED)

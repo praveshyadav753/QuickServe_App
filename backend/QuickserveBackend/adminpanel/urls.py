@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Adminstats,BusinessListAPIView,ServiceRequestView
+from .views import Adminstats,BusinessListAPIView,ServiceRequestView,CategorySubcategoryView
 
 urlpatterns = [
     # path('login/', login_view, name='login')
@@ -7,5 +7,7 @@ urlpatterns = [
     path('stats/',Adminstats.as_view(),name=''),
     path('manage/business/',BusinessListAPIView.as_view(),name=''),
     path("service-requests/", ServiceRequestView.as_view(), name="service_requests"),
+    path("get/cat&subcat/", CategorySubcategoryView.as_view(), name="service_requests"),
+
 
 ]

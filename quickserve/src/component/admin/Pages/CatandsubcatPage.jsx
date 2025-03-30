@@ -1,298 +1,375 @@
 import React, { useState } from "react";
 import { Edit, Trash, PlusCircle, Check, X } from "lucide-react";
-
-const initialData = {
-  categories: [
-    {
-      id: 1,
-      name: "Technology",
-      image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7",
-      subcategories: [
-        { id: 1, name: "Software", image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7" },
-        { id: 2, name: "Cloud Services", image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7" },
-        { id: 3, name: "Security", image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7" },
-      ],
-    },
-    {
-      id: 2,
-      name: "Health & Wellness",
-      image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7",
-      subcategories: [
-        { id: 4, name: "Fitness", image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7" },
-        { id: 5, name: "Nutrition", image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7" },
-        { id: 6, name: "Mental Health", image: "https://th.bing.com/th/id/OIP.Pneh22uyXw_rJ8leBae8VwHaHa?w=166&h=180&c=7&r=0&o=5&pid=1.7" },
-      ],
-    },
-  ],
-};
+import useApi from "../../../apihook";
+import usePostApi from "../../../usePostApi";
+import Loader from "../../Customer/Pages/loader/loader.jsx";
 
 const CatandsubcatPage = () => {
-  const [data, setData] = useState(initialData);
-  const [editingCategory, setEditingCategory] = useState(null);
-  const [editingSubcategory, setEditingSubcategory] = useState(null);
-  const [categoryEditValue, setCategoryEditValue] = useState("");
-  const [subcategoryEditValue, setSubcategoryEditValue] = useState("");
-  const [imageEditValue, setImageEditValue] = useState("");
-  const [subcatImageEditValue, setSubcatImageEditValue] = useState("");
-  const [newCategory, setNewCategory] = useState("");
-  const [newCategoryImage, setNewCategoryImage] = useState("");
-  const [newSubcategory, setNewSubcategory] = useState("");
-  const [newSubcategoryImage, setNewSubcategoryImage] = useState("");
+  const { loading, data, error, refresh } = useApi("adminpanel/get/cat&subcat/");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [newItem, setNewItem] = useState({
+    category: { category_name: "", image_url: "" },
+    subcategory: { subcategory_name: "", image_url: "", category: "" },
+  });
+  const [editing, setEditing] = useState({
+    category: null,
+    subcategory: null,
+  });
 
-  // Add a new category
-  const handleAddCategory = () => {
-    if (newCategory && newCategoryImage) {
-      setData((prevState) => ({
-        ...prevState,
-        categories: [
-          ...prevState.categories,
-          { id: Date.now(), name: newCategory, image: newCategoryImage, subcategories: [] },
-        ],
-      }));
-      setNewCategory("");
-      setNewCategoryImage("");
+  const resetForm = (type) => {
+    setNewItem(prev => ({ 
+      ...prev, 
+      [type]: type === 'category' 
+        ? { category_name: "", image_url: "" } 
+        : { subcategory_name: "", image_url: "", category: selectedCategory }
+    }));
+  };
+
+  const validateInput = (item, type) => {
+    if (type === 'subcategory') {
+      return item.subcategory_name?.trim() && item.image_url?.trim() && item.category;
+    }
+    return item.category_name?.trim() && item.image_url?.trim();
+  };
+
+  const handleAddCategory = async () => {
+    if (!validateInput(newItem.category, 'category')) return;
+    
+    try {
+      const { postData } = usePostApi("adminpanel/add/category/");
+      await postData(newItem.category);
+      refresh();
+      resetForm("category");
+    } catch (err) {
+      console.error("Error adding category:", err);
     }
   };
 
-  // Add a new subcategory
-  const handleAddSubcategory = () => {
-    if (selectedCategory && newSubcategory && newSubcategoryImage) {
-      setData((prevState) => ({
-        ...prevState,
-        categories: prevState.categories.map((cat) =>
-          cat.id === selectedCategory
-            ? {
-                ...cat,
-                subcategories: [
-                  ...cat.subcategories,
-                  { id: Date.now(), name: newSubcategory, image: newSubcategoryImage },
-                ],
-              }
-            : cat
-        ),
-      }));
-      setNewSubcategory("");
-      setNewSubcategoryImage("");
+  const handleAddSubcategory = async () => {
+    if (!selectedCategory || !validateInput(newItem.subcategory, 'subcategory')) return;
+    
+    try {
+      const { postData } = usePostApi("adminpanel/add/subcategory/");
+      await postData({
+        ...newItem.subcategory,
+        category: selectedCategory
+      });
+      refresh();
+      resetForm("subcategory");
+    } catch (err) {
+      console.error("Error adding subcategory:", err);
     }
   };
 
-  // Edit a category
-  const handleEditCategory = (category) => {
-    setEditingCategory(category.id);
-    setCategoryEditValue(category.name);
-    setImageEditValue(category.image);
+  const handleEdit = async (type, id, updates) => {
+    try {
+      const { postData } = usePostApi(`adminpanel/update/${type}/`);
+      await postData({ id, ...updates });
+      refresh();
+      setEditing({ ...editing, [type]: null });
+    } catch (err) {
+      console.error(`Error updating ${type}:`, err);
+    }
   };
 
-  // Save edited category
-  const handleSaveCategory = (id) => {
-    setData((prevState) => ({
-      ...prevState,
-      categories: prevState.categories.map((cat) =>
-        cat.id === id ? { ...cat, name: categoryEditValue, image: imageEditValue } : cat
-      ),
+  const handleDelete = async (type, id) => {
+    try {
+      const { postData } = usePostApi(`adminpanel/delete/${type}/`);
+      await postData({ id });
+      refresh();
+    } catch (err) {
+      console.error(`Error deleting ${type}:`, err);
+    }
+  };
+
+  const toggleCategory = (id) => {
+    setSelectedCategory(prev => (prev === id ? null : id));
+  };
+
+  const toggleEdit = (type, item) => {
+    setEditing(prev => ({
+      ...prev,
+      [type]: item ? { ...item } : null,
     }));
-    setEditingCategory(null);
   };
 
-  // Edit a subcategory
-  const handleEditSubcategory = (categoryId, subcategory) => {
-    setEditingSubcategory({ categoryId, subcategory: subcategory.name });
-    setSubcategoryEditValue(subcategory.name);
-    setSubcatImageEditValue(subcategory.image);
-  };
-
-  // Save edited subcategory
-  const handleSaveSubcategory = (categoryId, oldSub) => {
-    setData((prevState) => ({
-      ...prevState,
-      categories: prevState.categories.map((cat) =>
-        cat.id === categoryId
-          ? {
-              ...cat,
-              subcategories: cat.subcategories.map((sub) =>
-                sub.name === oldSub
-                  ? { ...sub, name: subcategoryEditValue, image: subcatImageEditValue }
-                  : sub
-              ),
-            }
-          : cat
-      ),
-    }));
-    setEditingSubcategory(null);
-  };
+  if (loading) return <Loader />;
+  if (error) return <div>Error loading data</div>;
+  if (!data) return <div>No data available</div>;
 
   return (
-    <div className="p-6 min-h-screen space-y-6 bg-gray-100 text-gray-900 dark:bg-[#1f253b] dark:text-gray-200">
-      <h3 className="text-xl font-semibold">Manage Categories & Subcategories</h3>
-      <div className="p-6">
-        {/* Add New Category Section */}
-        <div className="mb-6 p-4 rounded-md shadow-md bg-gray-200 dark:bg-[#2e334b]">
-          <h4 className="text-lg font-semibold mb-2">Add New Category</h4>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              className="p-2 rounded text-black dark:text-gray-200"
-              placeholder="Category Name"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-            />
-            <input
-              type="text"
-              className="p-2 rounded text-black dark:text-gray-200"
-              placeholder="Image URL"
-              value={newCategoryImage}
-              onChange={(e) => setNewCategoryImage(e.target.value)}
-            />
-            <button
-              className="bg-green-500 p-2 rounded text-white"
-              onClick={handleAddCategory}
-            >
-              <PlusCircle size={18} />
-            </button>
-          </div>
-        </div>
+    <div className="p-6 min-h-screen bg-gray-100 dark:bg-[#1f253b] text-gray-900 dark:text-gray-200">
+      <h3 className="text-xl font-semibold mb-6">Manage Categories & Subcategories</h3>
 
-        {/* Add New Subcategory Section */}
-        <div className="mb-6 p-4 rounded-md shadow-md bg-gray-200 dark:bg-[#2e334b]">
-          <h4 className="text-lg font-semibold mb-2">Add New Subcategory</h4>
-          <div className="flex gap-2">
-            <select
-              className="p-2 rounded dark:text-gray-200 dark:bg-[#2e334b] text-black"
-              value={selectedCategory || ""}
-              onChange={(e) => setSelectedCategory(Number(e.target.value))}
-            >
-              <option value="">Select Category</option>
-              {data.categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              className="p-2 rounded text-black dark:text-gray-200"
-              placeholder="Subcategory Name"
-              value={newSubcategory}
-              onChange={(e) => setNewSubcategory(e.target.value)}
-            />
-            <input
-              type="text"
-              className="p-2 rounded text-black dark:text-gray-200"
-              placeholder="Image URL"
-              value={newSubcategoryImage}
-              onChange={(e) => setNewSubcategoryImage(e.target.value)}
-            />
-            <button
-              className="bg-green-500 p-2 rounded text-white"
-              onClick={handleAddSubcategory}
-            >
-              <PlusCircle size={18} />
-            </button>
-          </div>
+      {/* Add Category Form */}
+      <div className="mb-8 p-4 bg-white dark:bg-[#2e334b] rounded-lg shadow">
+        <h4 className="text-lg font-medium mb-3">Add New Category</h4>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="text"
+            className="flex-1 p-2 rounded border dark:border-gray-600 dark:bg-[#1f253b]"
+            placeholder="Category Name"
+            value={newItem.category.category_name}
+            onChange={(e) =>
+              setNewItem(prev => ({
+                ...prev,
+                category: { ...prev.category, category_name: e.target.value },
+              }))
+            }
+          />
+          <input
+            type="text"
+            className="flex-1 p-2 rounded border dark:border-gray-600 dark:bg-[#1f253b]"
+            placeholder="Image URL"
+            value={newItem.category.image_url}
+            onChange={(e) =>
+              setNewItem(prev => ({
+                ...prev,
+                category: { ...prev.category, image_url: e.target.value },
+              }))
+            }
+          />
+          <button
+            className="bg-green-500 hover:bg-green-600 p-2 rounded text-white flex items-center justify-center gap-1"
+            onClick={handleAddCategory}
+            disabled={!validateInput(newItem.category, 'category')}
+          >
+            <PlusCircle size={18} /> Add
+          </button>
         </div>
+      </div>
 
-        {/* Display Categories and Subcategories */}
-        {data.categories.map((category) => (
-          <div key={category.id} className="p-4 rounded-md shadow-md mb-4 bg-gray-200 dark:bg-[#2e334b]">
-            <div className="flex justify-between items-center mb-2">
-              {editingCategory === category.id ? (
-                <div className="flex items-center gap-2">
+      {/* Categories List */}
+      <div className="space-y-4">
+        {data.map((category) => (
+          <div
+            key={category.category_id}
+            className="bg-white dark:bg-[#2e334b] rounded-lg shadow-md overflow-hidden"
+          >
+            {/* Category Header */}
+            <div
+              className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#3a4057]"
+              onClick={() => toggleCategory(category.category_id)}
+            >
+              <div className="flex items-center gap-3">
+                {category.image_url && (
+                  <img
+                    src={category.image_url}
+                    alt={category.category_name}
+                    className="w-10 h-10 rounded object-cover"
+                  />
+                )}
+                {editing.category?.category_id === category.category_id ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      className="flex-1 p-1 border rounded dark:bg-[#1f253b]"
+                      value={editing.category.category_name}
+                      onChange={(e) =>
+                        setEditing(prev => ({
+                          ...prev,
+                          category: { ...prev.category, category_name: e.target.value },
+                        }))
+                      }
+                    />
+                    <input
+                      type="text"
+                      className="flex-1 p-1 border rounded dark:bg-[#1f253b]"
+                      value={editing.category.image_url}
+                      onChange={(e) =>
+                        setEditing(prev => ({
+                          ...prev,
+                          category: { ...prev.category, image_url: e.target.value },
+                        }))
+                      }
+                    />
+                  </div>
+                ) : (
+                  <h4 className="text-lg font-semibold">{category.category_name}</h4>
+                )}
+              </div>
+              <div className="flex gap-2">
+                {editing.category?.category_id === category.category_id ? (
+                  <>
+                    <button
+                      className="p-1 text-green-500 hover:bg-green-100 dark:hover:bg-green-900 rounded"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit("category", category.category_id, {
+                          category_name: editing.category.category_name,
+                          image_url: editing.category.image_url,
+                        });
+                      }}
+                    >
+                      <Check size={18} />
+                    </button>
+                    <button
+                      className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleEdit("category", null);
+                      }}
+                    >
+                      <X size={18} />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="p-1 text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900 rounded"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleEdit("category", category);
+                      }}
+                    >
+                      <Edit size={18} />
+                    </button>
+                    <button
+                      className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete("category", category.category_id);
+                      }}
+                    >
+                      <Trash size={18} />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {selectedCategory === category.category_id && (
+              <div className="p-4 border-t dark:border-gray-700">
+                <h5 className="font-semibold mb-3">Subcategories</h5>
+                
+                {/* Add Subcategory Form */}
+                <div className="mb-4 flex flex-col sm:flex-row gap-3">
                   <input
                     type="text"
-                    className="p-2 rounded text-black"
-                    value={categoryEditValue}
-                    onChange={(e) => setCategoryEditValue(e.target.value)}
+                    className="flex-1 p-2 rounded border dark:border-gray-600 dark:bg-[#1f253b]"
+                    placeholder="Subcategory Name"
+                    value={newItem.subcategory.subcategory_name}
+                    onChange={(e) =>
+                      setNewItem(prev => ({
+                        ...prev,
+                        subcategory: { ...prev.subcategory, subcategory_name: e.target.value },
+                      }))
+                    }
                   />
                   <input
                     type="text"
-                    className="p-2 rounded text-black"
-                    value={imageEditValue}
-                    onChange={(e) => setImageEditValue(e.target.value)}
+                    className="flex-1 p-2 rounded border dark:border-gray-600 dark:bg-[#1f253b]"
+                    placeholder="Image URL"
+                    value={newItem.subcategory.image_url}
+                    onChange={(e) =>
+                      setNewItem(prev => ({
+                        ...prev,
+                        subcategory: { ...prev.subcategory, image_url: e.target.value },
+                      }))
+                    }
                   />
                   <button
-                    className="bg-green-500 p-2 rounded text-white"
-                    onClick={() => handleSaveCategory(category.id)}
+                    className="bg-blue-500 hover:bg-blue-600 p-2 rounded text-white flex items-center justify-center gap-1"
+                    onClick={handleAddSubcategory}
+                    disabled={!validateInput(newItem.subcategory, 'subcategory')}
                   >
-                    <Check size={18} />
-                  </button>
-                  <button
-                    className="bg-gray-500 p-2 rounded text-white"
-                    onClick={() => setEditingCategory(null)}
-                  >
-                    <X size={18} />
+                    <PlusCircle size={18} /> Add
                   </button>
                 </div>
-              ) : (
-                <div className="flex items-center gap-4">
-                  <img src={category.image} alt={category.name} className="w-12 h-12 rounded-md" />
-                  <h4 className="text-lg font-semibold">{category.name}</h4>
-                  <button
-                    className="text-blue-500"
-                    onClick={() => handleEditCategory(category)}
-                  >
-                    <Edit size={18} />
-                  </button>
-                </div>
-              )}
-            </div>
-            <div className="ml-4">
-              <h5 className="font-semibold p-2">Subcategories:</h5>
-              <ul className="list-disc ml-5">
-                {category.subcategories.map((subcategory) => (
-                  <li
-                    key={subcategory.id}
-                    className={`flex justify-between items-center px-2 py-1 rounded ${
-                      editingSubcategory?.categoryId === category.id &&
-                      editingSubcategory.subcategory === subcategory.name
-                        ? "bg-gray-300 dark:bg-[#1f253b]"
-                        : ""
-                    }`}
-                  >
-                    {editingSubcategory?.categoryId === category.id &&
-                    editingSubcategory.subcategory === subcategory.name ? (
-                      <>
-                        <input
-                          type="text"
-                          className="p-2 rounded text-black"
-                          value={subcategoryEditValue}
-                          onChange={(e) => setSubcategoryEditValue(e.target.value)}
-                        />
-                        <input
-                          type="text"
-                          className="p-2 rounded text-black"
-                          value={subcatImageEditValue}
-                          onChange={(e) => setSubcatImageEditValue(e.target.value)}
-                        />
-                        <button
-                          className="text-green-500"
-                          onClick={() => handleSaveSubcategory(category.id, subcategory.name)}
-                        >
-                          <Check size={14} />
-                        </button>
-                        <button
-                          className="text-gray-500"
-                          onClick={() => setEditingSubcategory(null)}
-                        >
-                          <X size={14} />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <img src={subcategory.image} alt={subcategory.name} className="w-8 h-8 rounded-md" />
-                        {subcategory.name}
-                        <button
-                          className="text-blue-500"
-                          onClick={() => handleEditSubcategory(category.id, subcategory)}
-                        >
-                          <Edit size={14} />
-                        </button>
-                      </>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
+
+                {/* Subcategories List */}
+                {category.subcategories && category.subcategories.length > 0 ? (
+                  <div className="space-y-2">
+                    {category.subcategories.map((sub) => (
+                      <div
+                        key={sub.subcategory_id}
+                        className="flex items-center justify-between p-2 hover:bg-gray-50 dark:hover:bg-[#3a4057] rounded"
+                      >
+                        <div className="flex items-center gap-3">
+                          {sub.image_url && (
+                            <img
+                              src={sub.image_url}
+                              alt={sub.subcategory_name}
+                              className="w-8 h-8 rounded object-cover"
+                            />
+                          )}
+                          {editing.subcategory?.subcategory_id === sub.subcategory_id ? (
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                className="p-1 border rounded dark:bg-[#1f253b]"
+                                value={editing.subcategory.subcategory_name}
+                                onChange={(e) =>
+                                  setEditing(prev => ({
+                                    ...prev,
+                                    subcategory: { ...prev.subcategory, subcategory_name: e.target.value },
+                                  }))
+                                }
+                              />
+                              <input
+                                type="text"
+                                className="p-1 border rounded dark:bg-[#1f253b]"
+                                value={editing.subcategory.image_url}
+                                onChange={(e) =>
+                                  setEditing(prev => ({
+                                    ...prev,
+                                    subcategory: { ...prev.subcategory, image_url: e.target.value },
+                                  }))
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <span>{sub.subcategory_name}</span>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          {editing.subcategory?.subcategory_id === sub.subcategory_id ? (
+                            <>
+                              <button
+                                className="p-1 text-green-500 hover:bg-green-100 dark:hover:bg-green-900 rounded"
+                                onClick={() =>
+                                  handleEdit("subcategory", sub.subcategory_id, {
+                                    subcategory_name: editing.subcategory.subcategory_name,
+                                    image_url: editing.subcategory.image_url,
+                                  })
+                                }
+                              >
+                                <Check size={18} />
+                              </button>
+                              <button
+                                className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded"
+                                onClick={() => toggleEdit("subcategory", null)}
+                              >
+                                <X size={18} />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                className="p-1 text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-900 rounded"
+                                onClick={() => toggleEdit("subcategory", sub)}
+                              >
+                                <Edit size={18} />
+                              </button>
+                              <button
+                                className="p-1 text-red-500 hover:bg-red-100 dark:hover:bg-red-900 rounded"
+                                onClick={() => handleDelete("subcategory", sub.subcategory_id)}
+                              >
+                                <Trash size={18} />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-gray-500 dark:text-gray-400 text-center py-4">
+                    No subcategories available
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

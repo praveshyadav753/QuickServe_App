@@ -135,8 +135,18 @@ const ServiceRequests = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 dark:bg-[#1f253b] min-h-screen text-gray-300">
-      <h2 className="text-2xl mb-4">Service Requests</h2>
+    <>
+    {postLoading  && 
+      <div className="flex justify-center items-center z-50  absolute left-110  h-screen ">
+      <div className="flex flex-row gap-2">
+        <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce"></div>
+        <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.3s]"></div>
+        <div className="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.5s]"></div>
+      </div>
+      </div> 
+    }
+<div className={`p-6 bg-gray-100 ${postLoading ? "opacity-30" : "opacity-100"} dark:bg-[#1f253b] min-h-screen text-gray-300`}>
+<h2 className="text-2xl mb-4">Business Requests</h2>
 
       {/* Shimmer Loading Effect */}
       {loading ? (
@@ -197,6 +207,7 @@ const ServiceRequests = () => {
         </table>
       )}
     </div>
+    </>
   );
 };
 

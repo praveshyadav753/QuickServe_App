@@ -37,7 +37,7 @@ const routes = [
     component: Businesspage,
   },
   {
-    name: "Service Requests",
+    name: "Business Requests",
     layout: "/admin",
     path: "service-requests",
     icon: ClipboardCheck,
