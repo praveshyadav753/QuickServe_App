@@ -123,7 +123,7 @@ const router = createBrowserRouter(
         <Route
           path="/checkout"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"customer"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Customer"}>
               <CheckoutPage />
             </ProtectRoute>
           }
@@ -131,7 +131,7 @@ const router = createBrowserRouter(
         <Route
           path="/mybookings"
           element={
-            <ProtectRoute AuthenticationRequired={true} role={"customer"}>
+            <ProtectRoute AuthenticationRequired={true} role={"Customer"}>
               <MyBookings />
             </ProtectRoute>
           }
@@ -144,7 +144,7 @@ const router = createBrowserRouter(
       <Route path="/Register">
         <Route index element={<RoleSelection />} />
         <Route path="business" element={<RegistrationPage />} />
-        <Route path="customer" element={<UserRegistrationPage />} />
+        <Route path="Customer" element={<UserRegistrationPage />} />
       </Route>
       {/* ______________________________________________________________________________________________________________________________________________________} */}
       {/*----------------------------------------------service provier-------------------------------------------------------- */}

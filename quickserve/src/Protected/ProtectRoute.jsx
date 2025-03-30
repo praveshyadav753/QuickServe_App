@@ -33,7 +33,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function ProtectRoute({ children, AuthenticationRequired = true, role }) {
+function ProtectRoute({ children, AuthenticationRequired = false, role }) {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const userRole = user?.role; // Ensure user exists before accessing role
 
