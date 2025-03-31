@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from business.models import Service
+import uuid
 
 User = get_user_model()
 
@@ -12,7 +13,7 @@ class Booking(models.Model):
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
     ]
-
+    id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="bookings")
     booking_date = models.DateTimeField()
@@ -22,7 +23,7 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Booking {self.id} - {self.user.username} - {self.service.name}"
+        return f"Booking {self.id} - {self.user.username} - {self.service.service_name}"
 
 # Payment Model
 class Payment(models.Model):
