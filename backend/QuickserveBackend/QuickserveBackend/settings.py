@@ -60,7 +60,7 @@ MIDDLEWARE = [
 ]
 # CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5174","http://localhost:5173",
+    "http://localhost:5174","http://localhost:5173", "https://quickserve-pi.vercel.app"
 ]
 CORS_ALLOW_CREDENTIALS = True
 REST_FRAMEWORK = {
@@ -103,25 +103,26 @@ WSGI_APPLICATION = 'QuickserveBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),  # Load from .env
-        'USER': os.getenv('DB_USER'),  # Load from .env
-        'PASSWORD': os.getenv('DB_PASSWORD'),  # Load from .env
-        'HOST': os.getenv('DB_HOST', 'localhost'),  # Default: localhost
-        'PORT': os.getenv('DB_PORT', '3306'),  # Default: 3306
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('DB_NAME'),  # Load from .env
+#         'USER': os.getenv('DB_USER'),  # Load from .env
+#         'PASSWORD': os.getenv('DB_PASSWORD'),  # Load from .env
+#         'HOST': os.getenv('DB_HOST', 'localhost'),  # Default: localhost
+#         'PORT': os.getenv('DB_PORT', '3306'),  # Default: 3306
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         }
+#     }
+# }
 
 
 # Password validation
