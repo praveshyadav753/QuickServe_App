@@ -1,0 +1,23 @@
+# render.yaml
+
+# No 'databases' section needed if you're using SQLite3 (ephemeral)
+
+services:
+  - type: web
+    name: quickservebackend # Name your web service
+    env: python
+    region: oregon # Choose a region closest to your users (e.g., oregon, frankfurt, singapore)
+    buildCommand: "./backend/build.sh" # Path to your build script
+    startCommand: "gunicorn QuickserveBackend.wsgi:application" # Command to start Gunicorn
+    rootDir: backend/QuickserveBackend # IMPORTANT: This tells Render where your Django project is located
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true # Render will generate a strong secret key for you
+      - key: WEB_CONCURRENCY
+        value: 4 # Number of Gunicorn workers (adjust based on your plan/needs)
+      - key: DJANGO_SETTINGS_MODULE
+        value: QuickserveBackend.settings # Replace with your actual settings module path
+      - key: PYTHON_VERSION
+        value: 3.10.0 # Specify a Python version, e.g., 3.9.x, 3.10.x, 3.11.x, 3.12.x (Render default might be older)
+
+    healthCheckPath: /health # Or another lightweight endpoint in your Django app (e.g., /admin/login/)
