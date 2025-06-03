@@ -5,7 +5,7 @@ import axios from "axios";
 export const fetchServices = createAsyncThunk("services/fetch", async () => {
   const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
-  const response = await axios.get("http://127.0.0.1:8000/service/services/?role=business", {
+  const response = await axios.get("https://quickserve.pythonanywhere.com/service/services/?role=business", {
     headers: {
       Authorization: `Bearer ${token}`, // Attach the token in the Authorization header
     },

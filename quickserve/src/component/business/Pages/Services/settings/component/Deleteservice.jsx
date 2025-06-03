@@ -26,7 +26,7 @@ const DeleteService = () => {
     try {
       setLoading(true); // ✅ Set loading before request
 
-      await axios.delete(`http://127.0.0.1:8000/business/services/${id}/`, {
+      await axios.delete(`https://quickserve.pythonanywhere.com/business/services/${id}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

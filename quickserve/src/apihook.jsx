@@ -3,7 +3,7 @@
 
 // // Create an Axios instance with a base URL
 // const apiClient = axios.create({
-//   baseURL: "http://127.0.0.1:8000", // Set your base URL
+//   baseURL: "https://quickserve.pythonanywhere.com", // Set your base URL
 //   withCredentials: true, // Include credentials (cookies, auth tokens)
 // });
 
@@ -56,7 +56,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8000", // Django backend URL
+  baseURL: "https://quickserve.pythonanywhere.com", // Django backend URL
   withCredentials: true, // Include cookies if needed
 });
 

@@ -12,12 +12,12 @@ export const syncCartOnLogin = async (   dispatch) => {
   try {
     // If guest cart has items, sync them with the backend
     if (guestCart.length > 0 ) {
-      const response = await axios.post(`http://127.0.0.1:8000/cart/sync/`, {  guestCart },{ headers });
+      const response = await axios.post(`https://quickserve.pythonanywhere.com/cart/sync/`, {  guestCart },{ headers });
       dispatch(setCart(response.data));
     }
 
     else{
-    const cartResponse = await axios.get(`http://127.0.0.1:8000/cart/get/`,{ headers });
+    const cartResponse = await axios.get(`https://quickserve.pythonanywhere.com/cart/get/`,{ headers });
     dispatch(setCart(cartResponse.data));  
   }
 
